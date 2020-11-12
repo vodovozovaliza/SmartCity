@@ -2,7 +2,6 @@ def coherence(arr, w):
     n = len(arr[0])
     p = [0 for i in range(n)]
     for i in range(n):
-        p[i] = 0
         for j in range(n):
             p[i] += arr[i][j] * w[j]
     for i in range(n):
@@ -41,7 +40,6 @@ if __name__ == '__main__':
     sz = len(a)
     for i in range(sz):
         print(a[i])
-    res = [0 for i in range(sz)]
     res = MAI(a)
     print(res)
     
