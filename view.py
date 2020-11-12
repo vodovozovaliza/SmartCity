@@ -43,5 +43,6 @@ def show(input_filename, weights):
     plt.savefig('result.png')
     plt.show()
 
-#show('movehubcostofliving.csv', [0.1, 0.1, 0.1, 0.2, 0.2, 0.4])
-show('test.csv', [0.1, 0.1, 0.1, 0.2, 0.2, 0.4])
+if __name__ == '__main__':
+    #show('movehubcostofliving.csv', [0.1, 0.1, 0.1, 0.2, 0.2, 0.4])
+    show('test.csv', [0.1, 0.1, 0.1, 0.2, 0.2, 0.4])
