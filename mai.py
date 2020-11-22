@@ -4,9 +4,9 @@ def coherence(arr, w):
     n = arr[0].size
     p = arr @ w
     p /= w
-    #lam = p.sum()
-    #lam /= n
-    lam = np.linalg.eig(arr)[0].max()
+    lam = p.sum()
+    lam /= n
+    #lam = np.linalg.eig(arr)[0].max()
     print('lam: ' +  str(lam))
     #calculate concordance factor
     ci = (lam - n) / (n - 1)
