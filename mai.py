@@ -4,14 +4,19 @@ def coherence(arr, w):
     n = arr[0].size
     p = arr @ w
     p /= w
-    lam = p.sum()
-    lam /= n
+    #lam = p.sum()
+    #lam /= n
+    lam = np.linalg.eig(arr)[0].max()
+    print('lam: ' +  str(lam))
     #calculate concordance factor
     ci = (lam - n) / (n - 1)
     #calculate random index
     ri = 1.98 * (n - 2) / n
     #calculate coherence
+    print('ci: ' + str(ci))
+    print('ri: ' + str(ri))
     cr = ci / ri
+    print('cr: ' + str(cr))
     return cr
 
 def MAI(arr):
@@ -23,6 +28,11 @@ def MAI(arr):
             s += arr[j][i]
         for j in range(n):
             arr[j][i] /= s
+
+    # print norm. matrix
+    print('Norm. matrix')
+    print(arr)
+
     #calculate the relative weights of indicators
     res = np.arange(n, dtype=float)
     for i in range(n):
