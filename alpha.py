@@ -5,13 +5,9 @@ def alpha(a, matrix_A, w0, q0):
     n = q0.size
     print('alpha')
 
-    e_vec = np.ones(m)
-
-    I_m = np.identity(m)
-
     I_n = np.identity(n)
 
-    P_m = I_m - (1 / m) * e_vec.transpose() * e_vec
+    P_m = np.identity(m) - (1 / m) * np.ones((m, m))
 
     Psi_n = matrix_A.dot(P_m).dot(matrix_A.transpose())
     P_n = I_n.dot(a) + Psi_n

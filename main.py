@@ -26,9 +26,12 @@ def round_(a):
 weights = mai.MAI(a)
 print('weights ')
 print(weights)
-weights_round = weights
-weights_round = list(map(round_, weights_round))
-print('weights_rounded: ')
+
+#view.show('movehubcostofliving.csv', weights)
+
+#weights_round = weights
+#weights_round = list(map(round_, weights_round))
+#print('weights_rounded: ')
 #print(weights_round)
 #view.show('movehubcostofliving.csv', weights)
 #alpha.alpha('movehubcostofliving.csv', weights)
@@ -36,6 +39,9 @@ print('weights_rounded: ')
 # вектор оценок
 df = pd.read_csv('movehubqualityoflife.csv')
 df = view.normalize(df)
+df = df.sort_values(by=df.columns[0])
+#print('df: ')
+#print(df)
 indicators = df['Movehub Rating']
 print('indicators: ')
 print(str(indicators))
@@ -43,31 +49,22 @@ print(str(indicators))
 pd.set_option('display.max_columns', 300)
 pd.set_option('display.max_rows', 300)
 
-indicators_round = indicators
-indicators_round = map(lambda x: round(x, 2), indicators_round)
-print('indicators_rounded: ')
+#indicators_round = indicators
+#indicators_round = map(lambda x: round(x, 2), indicators_round)
+#print('indicators_rounded: ')
 #print(list(indicators_round))
 
-sys.exit()
+#sys.exit()
 
 # Матрица оценок
-a_matrix = np.loadtxt('movehubcostofliving.csv', delimiter=",", skiprows=1, usecols=(1,2,3,4,5,6))
+df = pd.read_csv('movehubcostofliving.csv')
+df = view.normalize(df)
+df = df.sort_values(by=df.columns[0])
+#print('df: ')
+#print(df)
+a_matrix = df[df.columns[1:]].to_numpy()
 
-# Normalization
-
-b = a_matrix.transpose()
-
-for i in range(len(b)):
-    mean = b[i].mean()
-    
-    # Count of values
-    n = len(b[i])
-    # Sample standart deviation
-    ssd = np.sqrt((1 / (n - 1)) * np.power(b[i] - mean, 2).sum())
-
-    b[i] = (b[i] - mean) / ssd
-
-a_matrix = b.transpose()
+#sys.exit()
 
 print("alpha start")
 #print(alpha.alpha(0.5, a_matrix, weights, indicators))
