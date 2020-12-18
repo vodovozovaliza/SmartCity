@@ -7,32 +7,6 @@ from math import sqrt
 
 dpi = 80
 
-def positiveNormalization(df):
-    result = df.copy()
-    for feature_name in df.columns[1:]:
-        # Mean
-        mean = df[feature_name].mean()
-        # Count of values
-        n = len(df[feature_name])
-        # Sample standart deviation
-        ssd = np.sqrt((1 / (n - 1)) * np.power(df[feature_name] - mean, 2).sum())
-
-        result[feature_name] = df[feature_name] * ssd + mean
-    return result
-
-def normalize(df):
-    result = df.copy()
-    for feature_name in df.columns[1:]:
-        # Mean
-        mean = df[feature_name].mean()
-        # Count of values
-        n = len(df[feature_name])
-        # Sample standart deviation
-        ssd = np.sqrt((1 / (n - 1)) * np.power(df[feature_name] - mean, 2).sum())
-
-        result[feature_name] = (df[feature_name] - mean) / ssd
-    return result
-
 def minmax_normalization(df):
     result = df.copy()
     for feature_name in df.columns[1:]:

@@ -1,6 +1,5 @@
 import alpha
 import mai
-import positiveNorm
 import view
 import numpy as np
 import pandas as pd
@@ -20,16 +19,15 @@ a = np.array([
 # relative weights
 weights = mai.MAI(a)
 
-view.show('movehubcostofliving.csv', weights)
+view.show('testdata.csv', weights)
 
 # quality vector
-df = pd.read_csv('movehubqualityoflife.csv')
-df = view.minmax_normalization(df)
+df = pd.read_csv('testindicators.csv')
 df = df.sort_values(by=df.columns[0])
 indicators = df['Movehub Rating']
 
 # judgment matrix
-df = pd.read_csv('movehubcostofliving.csv')
+df = pd.read_csv('testdata.csv')
 df = view.minmax_normalization(df)
 df = df.sort_values(by=df.columns[0])
 a_matrix = df[df.columns[1:]].to_numpy()
@@ -37,6 +35,7 @@ a_matrix = df[df.columns[1:]].to_numpy()
 # alpha-concordance
 alpha_graphics.weight_graphs(a_matrix, weights, indicators)
 
+'''
 dict = {}
 for i in range(101):
     a = float(i / 100)
@@ -53,3 +52,4 @@ x, y = zip(*lists)
 
 plt.plot(x, y)
 plt.show()
+'''
