@@ -3,7 +3,22 @@ import pandas as pd
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 
+from math import sqrt
+
 dpi = 80
+
+def positiveNormalization(df):
+    result = df.copy()
+    for feature_name in df.columns[1:]:
+        # Mean
+        mean = df[feature_name].mean()
+        # Count of values
+        n = len(df[feature_name])
+        # Sample standart deviation
+        ssd = np.sqrt((1 / (n - 1)) * np.power(df[feature_name] - mean, 2).sum())
+
+        result[feature_name] = df[feature_name] * ssd + mean
+    return result
 
 def normalize(df):
     result = df.copy()
@@ -18,19 +33,31 @@ def normalize(df):
         result[feature_name] = (df[feature_name] - mean) / ssd
     return result
 
+def minmax_normalization(df):
+    result = df.copy()
+    for feature_name in df.columns[1:]:
+        # Minimum
+        min = df[feature_name].min()
+        # Maximum
+        max = df[feature_name].max()
+
+        result[feature_name] = (df[feature_name] - min) / (max - min)
+    return result
+
 def show(input_filename, weights):
 
     df = pd.read_csv(input_filename)
 
     # Normalize
-    #print(df[df.columns[1:]])
-    df = normalize(df)
-    #print(df[df.columns[1:]])
+    print(df[df.columns[1:]])
+    df = minmax_normalization(df)
+    print(df[df.columns[1:]])
 
-    # data processing
+    # Data processing
     df['Total score'] = (df[df.columns[1:]] * weights).sum(axis=1)
-    #print(df['Total score'])
-    # sort values by total score
+    # print(df['Total score'])
+
+    # Sort values by total score
     df.sort_values(by='Total score', ascending=True, inplace=True)
 
     # Set font size
