@@ -1,8 +1,12 @@
 import alpha
-import matplotlib as mpl
 import matplotlib.pyplot as plt
 
 def weight_graphs(matrix_a, weights, q0):
+    """
+    :param q0: zero-coordinate on alpha
+    :return: nothing
+    :does: displays a graph of the dependence of weights
+    """
     w_a = []
     for i in range(len(weights)):
         w_a.append({})

@@ -1,6 +1,13 @@
 import numpy as np
 
 def alpha(a, matrix_A, w0, q0):
+    """
+    :param a: alpha coefficient
+    :param matrix_A: the matrix
+    :param w0: weights
+    :param q0: indicator
+    :return: new, more accurate weights
+    """
     m = w0.size
     n = q0.size
     print('alpha')
