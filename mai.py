@@ -1,5 +1,11 @@
 import numpy as np
 def coherence(arr, w):
+    """
+    :param arr: matrix
+    :param w: weights
+    :return: coherence of the matrix
+    :does: finds the coherence through concordance factor and random index, using the maximum eigenvalue of matrixЯ
+    """
     #calculate maximum eigenvalue of matrix
     n = arr[0].size
     p = arr @ w
@@ -27,6 +33,12 @@ def coherence(arr, w):
     return cr
 
 def MAI(arr):
+    """
+    :param arr: matrix of pairwise comparisons of features
+    :return: a vector that contains weights of features
+    :does: normalizes the matrix, calculates the relative weights of indicators
+           and then checks if matrix coherence is satisfying
+    """
     n = arr[0].size
     init = np.copy(arr)
     # normalize the matrix
@@ -51,7 +63,7 @@ def MAI(arr):
     if coh > 0.1:
         return [-1]
     return res
-
+'''
 if __name__ == '__main__':
     #initialize data
     a = np.array([[1, 2, 1/3, 1/5, 1/7], [1/2, 1, 1/6, 1/9, 1/9], [3, 6, 1, 1/2, 1/2], [5, 9, 2, 1, 1/2], [7, 9, 2, 2, 1]])
@@ -59,3 +71,4 @@ if __name__ == '__main__':
     print(a)
     #print resulting data
     print(MAI(a))
+'''

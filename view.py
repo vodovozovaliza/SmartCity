@@ -8,6 +8,9 @@ from math import sqrt
 dpi = 80
 
 def minmax_normalization(df):
+    """
+    :does: normalizez the data for that it numbers are between 0 and 1
+    """
     result = df.copy()
     for feature_name in df.columns[1:]:
         # Minimum
@@ -19,7 +22,9 @@ def minmax_normalization(df):
     return result
 
 def show(input_filename, weights):
-
+    """
+    :does: shows all the data in a diagram
+    """
     df = pd.read_csv(input_filename)
 
     # Normalize

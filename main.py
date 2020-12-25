@@ -1,10 +1,8 @@
-import alpha
-import mai
-import view
+import alpha # alpha-concordance of weights and indicators
+import mai # calculates the relative weights of indicators
+import view # displays the diagram of indicators
 import numpy as np
 import pandas as pd
-import alpha_graphics
-import matplotlib.pyplot as plt
 
 # test data
 a = np.array([
@@ -18,13 +16,14 @@ a = np.array([
 
 # relative weights
 weights = mai.MAI(a)
+coh = mai.coherence(a, weights)
 #view.show('testdata.csv', weights)
 
 # quality vector
 df = pd.read_csv('testindicators.csv')
 df = df.sort_values(by=df.columns[0])
 #
-#df = view.minmax_normalization(df)
+df = view.minmax_normalization(df)
 #
 indicators = df['Movehub Rating']
 
