@@ -4,93 +4,113 @@ import view # displays the diagram of indicators
 import numpy as np
 import pandas as pd
 
-# test data
-a = np.array([
-    [1, 1, 1/2, 1/5, 1/9, 1/9],
-    [1, 1, 1/2, 1/5, 1/9, 1/9],
-    [2, 2, 1, 1/5, 1/9, 1/9],
-    [5, 5, 5, 1, 1/5, 1/5],
-    [9, 9, 9, 5, 1, 1/2],
-    [9, 9, 9, 3, 2, 1]
-    ])
+#def get_new_weights(data_file='testdata.csv', indicator_file='testindicators.csv',):
 
-# relative weights
-weights = mai.MAI(a)
-coh = mai.coherence(a, weights)
-#view.show('testdata.csv', weights)
+def minmax_normalization(df):
+    """
+    :does: normalizez the data for that it numbers are between 0 and 1
+    """
+    result = df.copy()
+    for feature_name in df.columns[1:]:
+        # Minimum
+        min = df[feature_name].min()
+        # Maximum
+        max = df[feature_name].max()
 
-# quality vector
-df = pd.read_csv('testindicators.csv')
-df = df.sort_values(by=df.columns[0])
-#
-df = view.minmax_normalization(df)
-#
-indicators = df['Movehub Rating']
+        result[feature_name] = (df[feature_name] - min) / (max - min)
+    return result
 
-# judgment matrix
-df = pd.read_csv('testdata.csv')
-df = view.minmax_normalization(df)
-df = df.sort_values(by=df.columns[0])
-a_matrix = df[df.columns[1:]].to_numpy()
+def get_df_res(df_data, weights):
+    # Data processing
+    df_data['Total score'] = (df_data[df_data.columns[1:]] * weights).sum(axis=1)
+    # Sort values by total score
+    df_data.sort_values(by='Total score', ascending=True, inplace=True)
+    # Reset indedxes after sorrt
+    df_data = df_data.reset_index(drop=True)
+    return df_data
 
-# normalize indicators
-indicators_norm = np.copy(indicators)
-print('indicators')
-print(indicators)
+def get_new_weights(df_data, df_indicator):
+    # test data
+    a = np.array([
+        [1, 1, 1/2, 1/5, 1/9, 1/9],
+        [1, 1, 1/2, 1/5, 1/9, 1/9],
+        [2, 2, 1, 1/5, 1/9, 1/9],
+        [5, 5, 5, 1, 1/5, 1/5],
+        [9, 9, 9, 5, 1, 1/2],
+        [9, 9, 9, 3, 2, 1]
+        ])
 
-n = indicators_norm.size
-'''s = 0
-for i in range(n):
-    s += indicators_norm[i]
-for i in range(n):
-    indicators_norm[i] /= s'''
+    # relative weights
+    weights = mai.MAI(a)
+    coh = mai.coherence(a, weights)
+    #view.show('testdata.csv', weights)
 
-mn = indicators_norm.min()
-mx = indicators_norm.max()
-for i in range(n):
-    indicators_norm[i] = (indicators_norm[i] - mn) / (mx - mn)
+    # quality vector
+    df_indicator = df_indicator.sort_values(by=df_indicator.columns[0])
 
-print('indicators_norm')
-print(indicators_norm)
+    indicators = df_indicator['Rating']
 
-dq = indicators_norm.var(ddof=0)
-#dq = indicators.var(ddof=0)
-print('dq: ' + str(dq))
+    # judgment matrix
+    df_data = df_data.sort_values(by=df_data.columns[0])
+    a_matrix = df_data[df_data.columns[1:]].to_numpy()
 
-#print(a)
-#print(weights)
+    # normalize indicators
+    indicators_norm = np.copy(indicators)
+    print('indicators')
+    print(indicators)
 
-coh = mai.coherence(a, weights)
-# sum |A*w - q0|
-#coh = np.absolute((a_matrix * weights).sum(axis=1) - indicators).sum()
-print('coh: ' + str(coh))
+    n = indicators_norm.size
+    '''s = 0
+    for i in range(n):
+        s += indicators_norm[i]
+    for i in range(n):
+        indicators_norm[i] /= s'''
 
-alpha_coef = dq / coh
-print('alpha_coef: ' + str(alpha_coef))
+    mn = indicators_norm.min()
+    mx = indicators_norm.max()
+    for i in range(n):
+        indicators_norm[i] = (indicators_norm[i] - mn) / (mx - mn)
 
-sys.exit()
+    print('indicators_norm')
+    print(indicators_norm)
 
-w_new = alpha.alpha(alpha_coef, a_matrix, weights, indicators)
-print('w_new: ' + str(w_new))
+    dq = indicators_norm.var(ddof=0)
+    #dq = indicators.var(ddof=0)
+    print('dq: ' + str(dq))
 
-# alpha-concordance
-#alpha_graphics.weight_graphs(a_matrix, weights, indicators)
+    #print(a)
+    #print(weights)
 
-'''
-dict = {}
-for i in range(101):
-    a = float(i / 100)
-    dict[a] = alpha.alpha(a, a_matrix, weights, indicators)
-min_value = dict[0]
-min_alpha = 0
-for i in range(101):
-    alpha = float(i / 100)
-    if (dict[alpha] < min_value):
-        min_value = dict[alpha]
-        min_alpha = alpha
-lists = (dict.items())
-x, y = zip(*lists)
+    coh = mai.coherence(a, weights)
+    # sum |A*w - q0|
+    #coh = np.absolute((a_matrix * weights).sum(axis=1) - indicators).sum()
+    print('coh: ' + str(coh))
 
-plt.plot(x, y)
-plt.show()
-'''
+    alpha_coef = dq / coh
+    print('alpha_coef: ' + str(alpha_coef))
+
+    w_new = alpha.alpha(alpha_coef, a_matrix, weights, indicators)
+    print('w_new: ' + str(w_new))
+    return w_new
+
+    # alpha-concordance
+    #alpha_graphics.weight_graphs(a_matrix, weights, indicators)
+
+    '''
+    dict = {}
+    for i in range(101):
+        a = float(i / 100)
+        dict[a] = alpha.alpha(a, a_matrix, weights, indicators)
+    min_value = dict[0]
+    min_alpha = 0
+    for i in range(101):
+        alpha = float(i / 100)
+        if (dict[alpha] < min_value):
+            min_value = dict[alpha]
+            min_alpha = alpha
+    lists = (dict.items())
+    x, y = zip(*lists)
+
+    plt.plot(x, y)
+    plt.show()
+    '''
