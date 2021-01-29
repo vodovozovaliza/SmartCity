@@ -67,7 +67,7 @@
         <enum>QFrame::Box</enum>
        </property>
        <property name="text">
-        <string>3</string>
+        <string>Wine</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
@@ -92,7 +92,7 @@
         <enum>QFrame::Box</enum>
        </property>
        <property name="text">
-        <string>5</string>
+        <string>Avg Rent</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
@@ -267,7 +267,7 @@
         <enum>QFrame::Box</enum>
        </property>
        <property name="text">
-        <string>2</string>
+        <string>Cinema</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
@@ -317,7 +317,7 @@
         <enum>QFrame::Box</enum>
        </property>
        <property name="text">
-        <string>6</string>
+        <string>Avg Disposable Income</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
@@ -423,7 +423,7 @@
         <enum>QFrame::Box</enum>
        </property>
        <property name="text">
-        <string>4</string>
+        <string>Gasoline</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
@@ -448,7 +448,7 @@
         <enum>QFrame::Box</enum>
        </property>
        <property name="text">
-        <string>1</string>
+        <string>Cappuccino</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>

@@ -1,10 +1,10 @@
-import alpha # alpha-concordance of weights and indicators
-import mai # calculates the relative weights of indicators
-import view # displays the diagram of indicators
+import alpha  # alpha-concordance of weights and indicators
+import mai  # calculates the relative weights of indicators
 import numpy as np
 import pandas as pd
 
-#def get_new_weights(data_file='testdata.csv', indicator_file='testindicators.csv',):
+# def get_new_weights(data_file='testdata.csv', indicator_file='testindicators.csv',):
+
 
 def minmax_normalization(df):
     """
@@ -13,12 +13,13 @@ def minmax_normalization(df):
     result = df.copy()
     for feature_name in df.columns[1:]:
         # Minimum
-        min = df[feature_name].min()
+        min_value = df[feature_name].min()
         # Maximum
-        max = df[feature_name].max()
+        max_value = df[feature_name].max()
 
-        result[feature_name] = (df[feature_name] - min) / (max - min)
+        result[feature_name] = (df[feature_name] - min_value) / (max_value - min_value)
     return result
+
 
 def get_df_res(df_data, weights):
     # Data processing
@@ -28,6 +29,7 @@ def get_df_res(df_data, weights):
     # Reset indedxes after sorrt
     df_data = df_data.reset_index(drop=True)
     return df_data
+
 
 def get_new_weights(df_data, df_indicator):
     # test data
@@ -41,9 +43,9 @@ def get_new_weights(df_data, df_indicator):
         ])
 
     # relative weights
-    weights = mai.MAI(a)
-    coh = mai.coherence(a, weights)
-    #view.show('testdata.csv', weights)
+    weights = mai.mai(a)
+    # coh = mai.coherence(a, weights)
+    # view.show('testdata.csv', weights)
 
     # quality vector
     df_indicator = df_indicator.sort_values(by=df_indicator.columns[0])
@@ -75,15 +77,15 @@ def get_new_weights(df_data, df_indicator):
     print(indicators_norm)
 
     dq = indicators_norm.var(ddof=0)
-    #dq = indicators.var(ddof=0)
+    # dq = indicators.var(ddof=0)
     print('dq: ' + str(dq))
 
-    #print(a)
-    #print(weights)
+    # print(a)
+    # print(weights)
 
     coh = mai.coherence(a, weights)
     # sum |A*w - q0|
-    #coh = np.absolute((a_matrix * weights).sum(axis=1) - indicators).sum()
+    # coh = np.absolute((a_matrix * weights).sum(axis=1) - indicators).sum()
     print('coh: ' + str(coh))
 
     alpha_coef = dq / coh
@@ -94,7 +96,7 @@ def get_new_weights(df_data, df_indicator):
     return w_new
 
     # alpha-concordance
-    #alpha_graphics.weight_graphs(a_matrix, weights, indicators)
+    # alpha_graphics.weight_graphs(a_matrix, weights, indicators)
 
     '''
     dict = {}
@@ -114,3 +116,10 @@ def get_new_weights(df_data, df_indicator):
     plt.plot(x, y)
     plt.show()
     '''
+
+if __name__ == '__main__':
+    df1 = pd.read_csv('testdata.csv')
+    df1 = minmax_normalization(df1)
+    df2 = pd.read_csv('testindicators.csv')
+    #df2 = minmax_normalization(df2)
+    print(get_new_weights(df1, df2))

@@ -8,8 +8,9 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-class Ui_MainWindow(object):
-    def setupUi(self, MainWindow):
+
+class UiMainWindow(object):
+    def setup_ui(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(920, 690)
         MainWindow.setMinimumSize(QtCore.QSize(920, 690))
@@ -49,6 +50,7 @@ class Ui_MainWindow(object):
         self.pagename.setAlignment(QtCore.Qt.AlignCenter)
         self.pagename.setObjectName("pagename")
         self.search_button = QtWidgets.QPushButton(self.centralwidget)
+        self.search_button.setEnabled(False)
         self.search_button.setGeometry(QtCore.QRect(0, 50, 61, 51))
         self.search_button.setText("")
         icon3 = QtGui.QIcon()
@@ -77,4 +79,3 @@ class Ui_MainWindow(object):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "Smart City"))
         self.pagename.setText(_translate("MainWindow", "0-10"))
-
