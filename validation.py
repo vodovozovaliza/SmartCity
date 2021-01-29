@@ -17,6 +17,7 @@ def check_float(f):
         return False
     return True
 
+
 def data_validation(filename):
     """
         :param filename: name of the csv file with data
@@ -33,8 +34,10 @@ def data_validation(filename):
        'Avg Disposable Income']):
 
         # define validation elements
-        decimal_validation = [CustomElementValidation(lambda d: check_float(d), 'Значение должно быть числом в виде десятичной дроби')]
-        null_validation = [CustomElementValidation(lambda d: d is not np.nan, 'Значение не может быть пустым')]
+        decimal_validation = [CustomElementValidation(lambda d: check_float(d),
+                                                      'Значение должно быть числом в виде десятичной дроби')]
+        null_validation = [CustomElementValidation(lambda d: d is not np.nan,
+                                                   'Значение не может быть пустым')]
 
         # define validation schema
         schema = pandas_schema.Schema([
@@ -61,6 +64,7 @@ def data_validation(filename):
     else:
         return [False, ['Названия критериев не совпадают.']]
 
+
 def indicators_validation(filename, df):
     """
         :param filename: name of the csv file with data
@@ -74,7 +78,7 @@ def indicators_validation(filename, df):
         return [False, ['Ошибка чтения файла']]
 
     # check Column names
-    if (data.columns.to_list() == ['City', 'Rating']):
+    if data.columns.to_list() == ['City', 'Rating']:
 
         # compare city names
         data.sort_values(by=data.columns[0])
@@ -85,10 +89,11 @@ def indicators_validation(filename, df):
         df = df.drop(index=errors1)
         data = data.drop(index=errors2)
 
-
         # define validation elements
-        decimal_validation = [CustomElementValidation(lambda d: check_float(d), 'Значение должно быть числом в виде десятичной дроби')]
-        null_validation = [CustomElementValidation(lambda d: d is not np.nan, 'Значение не может быть пустым')]
+        decimal_validation = [CustomElementValidation(lambda d: check_float(d),
+                                                      'Значение должно быть числом в виде десятичной дроби')]
+        null_validation = [CustomElementValidation(lambda d: d is not np.nan,
+                                                   'Значение не может быть пустым')]
 
         # define validation schema
         schema = pandas_schema.Schema([
@@ -111,6 +116,7 @@ def indicators_validation(filename, df):
         return [False, ['Названия критериев не совпадают.']]
 
 
+"""
 if __name__ == '__main__':
     # true -> df -> lest of errors
     # false -> list of errors
@@ -125,3 +131,4 @@ if __name__ == '__main__':
         if check[0]:
             df2 = check[1]
             df1 = check[2]
+"""

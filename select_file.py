@@ -8,6 +8,7 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
@@ -70,4 +71,3 @@ class Ui_Form(object):
         self.indfile_button.setText(_translate("Form", "Выбрать файл индикаторов"))
         self.cancel_button.setText(_translate("Form", "Отмена"))
         self.ok_button.setText(_translate("Form", "OK"))
-

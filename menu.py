@@ -1,23 +1,22 @@
 from matplotlib.backends.qt_compat import QtCore, QtWidgets, is_pyqt5
-from matplotlib.backends.backend_qt5agg import (
-        FigureCanvas, NavigationToolbar2QT as NavigationToolbar)
-from matplotlib.figure import Figure
+from matplotlib.backends.backend_qt5agg import (FigureCanvas)
 
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QFileDialog
 import select_file
 import dashboard
 import search
 
-import validation,view, main
-import numpy as np
-import time
+import validation # validates the files
+import view # displays the diagram of indicators
+import main
 import sys
 
 import qtmodern.styles
 import qtmodern.windows
 
-class file_window(QtWidgets.QMainWindow, select_file.Ui_Form):
+
+class FileWindow(QtWidgets.QMainWindow, select_file.Ui_Form):
     
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -42,7 +41,8 @@ class file_window(QtWidgets.QMainWindow, select_file.Ui_Form):
                     self.output1.setText('Импортированы все {} строк'.format(str(len(self.df1['City']))))
                     self.output1.setStyleSheet('color: green;')
                 else:
-                    self.output1.setText('Импортированы {} строк\nСтрок с ошибками: {}'.format(str(len(self.df1['City'])), str(len(check[2]))))
+                    self.output1.setText('Импортированы {} строк\n'
+                                         'Строк с ошибками: {}'.format(str(len(self.df1['City'])), str(len(check[2]))))
                     self.output1.setStyleSheet('color: #F0BB15;')
             else:
                 self.output1.setText('\n'.join(check[1]))
@@ -64,14 +64,15 @@ class file_window(QtWidgets.QMainWindow, select_file.Ui_Form):
                     self.output2.setText('Импортированы все {} строк'.format(str(len(self.df2['City']))))
                     self.output2.setStyleSheet('color: green;')
                 else:
-                    self.output2.setText('Импортированы {} строк\nСтрок с ошибками: {}'.format(str(len(self.df2['City'])), str(len(check[3]))))
+                    self.output2.setText('Импортированы {} строк\n'
+                                         'Строк с ошибками: {}'.format(str(len(self.df2['City'])), str(len(check[3]))))
                     self.output2.setStyleSheet('color: #F0BB15;')
             else:
                 self.output2.setText('\n'.join(check[1]))
                 self.output2.setStyleSheet('color: #E61F0F;')
 
     def send_data(self):
-        self.parent.setFiles(self.df1, self.df2)
+        self.parent.set_files(self.df1, self.df2)
         self.close()
 
     def close(self):
@@ -81,7 +82,8 @@ class file_window(QtWidgets.QMainWindow, select_file.Ui_Form):
         self.datafile_button.setEnabled(True)
         self.indfile_button.setEnabled(True)
 
-class search_window(QtWidgets.QMainWindow, search.Ui_MainWindow):
+
+class SearchWindow(QtWidgets.QMainWindow, search.UiMainWindow):
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -110,33 +112,34 @@ class search_window(QtWidgets.QMainWindow, search.Ui_MainWindow):
         city = res.iloc[0]
 
         self.label_name.setText(city['City'])
-        self.label_place.setText(str(cnt - res.index[res['City'] == city['City']].tolist()[0]))
-        self.label_v1.setText(str(city['Cappuccino']))
-        self.label_v2.setText(str(city['Cinema']))
-        self.label_v3.setText(str(city['Wine']))
-        self.label_v4.setText(str(city['Gasoline']))
-        self.label_v5.setText(str(city['Avg Rent']))
-        self.label_v6.setText(str(city['Avg Disposable Income']))
-        self.label_sum.setText(str(city['Total score']))
+        self.label_place.setText(str(round(cnt - res.index[res['City'] == city['City']].tolist()[0], 3)))
+        self.label_v1.setText(str(round(city['Cappuccino'], 3)))
+        self.label_v2.setText(str(round(city['Cinema'], 3)))
+        self.label_v3.setText(str(round(city['Wine'], 3)))
+        self.label_v4.setText(str(round(city['Gasoline'], 3)))
+        self.label_v5.setText(str(round(city['Avg Rent'], 3)))
+        self.label_v6.setText(str(round(city['Avg Disposable Income'], 3)))
+        self.label_sum.setText(str(round(city['Total score'], 3)))
 
-class my_app(QtWidgets.QMainWindow, dashboard.Ui_MainWindow):
+
+class MyApp(QtWidgets.QMainWindow, dashboard.UiMainWindow):
     
     def __init__(self):
         QtWidgets.QMainWindow.__init__(self)
-        dashboard.Ui_MainWindow.__init__(self)
-        self.setupUi(self)
+        dashboard.UiMainWindow.__init__(self)
+        self.setup_ui(self)
         self.up_button.clicked.connect(self.up_dashboard)
         self.down_button.clicked.connect(self.down_dashboard)
-        #self.indicatorfile_button.clicked.connect(self.open_indicator_sheet)
-        #self.datafile_button.clicked.connect(self.open_data_sheet)
+        # self.indicatorfile_button.clicked.connect(self.open_indicator_sheet)
+        # self.datafile_button.clicked.connect(self.open_data_sheet)
         self.openfile_button.clicked.connect(self.openfile)
         self.search_button.clicked.connect(self.search_btn)
         self.save_button.clicked.connect(self.save_res)
 
-        #self.setCentralWidget(self.widget)
-        #self.showMaximized()
+        # self.setCentralWidget(self.widget)
+        # self.showMaximized()
         self.layout_widget = QtWidgets.QVBoxLayout(self.widget)
-        self.dynamic_canvas  = None
+        self.dynamic_canvas = None
         self.ax = None
         self.df_data = None
         self.df_indicator = None
@@ -147,26 +150,26 @@ class my_app(QtWidgets.QMainWindow, dashboard.Ui_MainWindow):
         self.step = 10
         
         self.up_button.setEnabled(False)
-        #self.layout_widget.addWidget(self.dynamic_canvas)
-        #layout.adjustSize()
-        #self.addToolBar(QtCore.Qt.BottomToolBarArea, NavigationToolbar(dynamic_canvas, self))
+        # self.layout_widget.addWidget(self.dynamic_canvas)
+        # layout.adjustSize()
+        # self.addToolBar(QtCore.Qt.BottomToolBarArea, NavigationToolbar(dynamic_canvas, self))
 
     def openfile(self):
-        self.file_window = file_window(self)
+        self.file_window = FileWindow(self)
         self.file_window.show()
 
     def search_btn(self):
-        #search.Ui_Form.setupUi(search.Ui_Form)
-        self.search_window = search_window(self)
+        # search.Ui_Form.setup_ui(search.Ui_Form)
+        self.search_window = SearchWindow(self)
         self.search_window.show()
 
-    def setFiles(self, df1, df2):
+    def set_files(self, df1, df2):
         # Normalize
         self.df_data = main.minmax_normalization(df1)
         self.df_indicator = main.minmax_normalization(df2)
         self.weights = main.get_new_weights(self.df_data, self.df_indicator)
         self.df_res = main.get_df_res(self.df_data, self.weights)
-        #self.df_res = self.df_res.reset_index()
+        # self.df_res = self.df_res.reset_index()
 
         self.bg = 0
         self.update_canvas()
@@ -185,11 +188,10 @@ class my_app(QtWidgets.QMainWindow, dashboard.Ui_MainWindow):
 
     def update_canvas(self):
         # Remove old FigureCanvas
-        if not self.dynamic_canvas is None:
+        if self.dynamic_canvas is not None:
             self.dynamic_canvas.deleteLater()
-        if not self.ax is None:
+        if self.ax is not None:
             self.ax.remove()
-
         if self.bg == 0:
             self.up_button.setEnabled(False)
         else:
@@ -205,10 +207,10 @@ class my_app(QtWidgets.QMainWindow, dashboard.Ui_MainWindow):
         self.fig, self.ax = view.show(self.df_res, self.bg, self.step)
         
         # Попытки сделать график прозрачным
-        #self.ax.patch.set_visible(False)
-        #self.ax.patch.set_facecolor('None')
-        #self.fig.patch.set_visible(False)
-        #self.setStyleSheet("background-color:transparent;")
+        # self.ax.patch.set_visible(False)
+        # self.ax.patch.set_facecolor('None')
+        # self.fig.patch.set_visible(False)
+        # self.setStyleSheet("background-color:transparent;")
         
         self.dynamic_canvas = FigureCanvas(self.fig)
 
@@ -220,7 +222,7 @@ class my_app(QtWidgets.QMainWindow, dashboard.Ui_MainWindow):
         city = city.lower()
         df = self.df_res.copy()
         df = df[df['City'].str.lower().str.startswith(city, na=False)]
-        #print(df)
+        # print(df)
         return df, len(self.df_indicator['Rating'])
 
     def save_res(self):
@@ -229,13 +231,14 @@ class my_app(QtWidgets.QMainWindow, dashboard.Ui_MainWindow):
             print(path)
             self.df_res.to_csv(path, index=False)
 
+
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
-    window = my_app()
+    window = MyApp()
     
-    qtmodern.styles.light(app)
+    qtmodern.styles.dark(app)
     mw = qtmodern.windows.ModernWindow(window)
     mw.show()
     
-    #window.show()
+    # window.show()
     app.exec_()
