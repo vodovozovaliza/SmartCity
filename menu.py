@@ -128,12 +128,12 @@ class SearchWindow(QtWidgets.QMainWindow, search.Ui_MainWindow):
         self.label_sum.setText(str(round(city['Total score'], 3)))
 
 
-class MyApp(QtWidgets.QMainWindow, dashboard.UiMainWindow):
+class MyApp(QtWidgets.QMainWindow, dashboard.Ui_MainWindow):
     
     def __init__(self):
         QtWidgets.QMainWindow.__init__(self)
-        dashboard.UiMainWindow.__init__(self)
-        self.setup_ui(self)
+        dashboard.Ui_MainWindow.__init__(self)
+        self.setupUi(self)
         self.up_button.clicked.connect(self.up_dashboard)
         self.down_button.clicked.connect(self.down_dashboard)
         self.openfile_button.clicked.connect(self.openfile)

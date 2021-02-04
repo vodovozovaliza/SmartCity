@@ -19,6 +19,10 @@
   <property name="windowTitle">
    <string>Smart City</string>
   </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>ico.png</normaloff>ico.png</iconset>
+  </property>
   <property name="styleSheet">
    <string notr="true"/>
   </property>
@@ -34,6 +38,9 @@
       <width>61</width>
       <height>51</height>
      </rect>
+    </property>
+    <property name="toolTip">
+     <string>Назад</string>
     </property>
     <property name="text">
      <string/>
@@ -71,6 +78,9 @@
       <height>51</height>
      </rect>
     </property>
+    <property name="toolTip">
+     <string>Далее</string>
+    </property>
     <property name="text">
      <string/>
     </property>
@@ -87,6 +97,9 @@
       <width>61</width>
       <height>51</height>
      </rect>
+    </property>
+    <property name="toolTip">
+     <string>Выбрать файл</string>
     </property>
     <property name="text">
      <string/>
@@ -130,6 +143,9 @@
       <height>51</height>
      </rect>
     </property>
+    <property name="toolTip">
+     <string>Поиск города</string>
+    </property>
     <property name="text">
      <string/>
     </property>
@@ -156,12 +172,44 @@
       <height>51</height>
      </rect>
     </property>
+    <property name="toolTip">
+     <string>Сохранить в файл</string>
+    </property>
     <property name="text">
      <string/>
     </property>
     <property name="icon">
      <iconset>
       <normaloff>imgs/save.svg</normaloff>imgs/save.svg</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>30</width>
+      <height>30</height>
+     </size>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="info_button">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>150</y>
+      <width>61</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="toolTip">
+     <string>Информация</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="icon">
+     <iconset>
+      <normaloff>imgs/info.png</normaloff>imgs/info.png</iconset>
     </property>
     <property name="iconSize">
      <size>
