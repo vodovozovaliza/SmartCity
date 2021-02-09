@@ -28,16 +28,16 @@ def data_validation(filename):
     try:
         data = pd.read_csv(filename)
     except Exception:
-        return [False, ['Ошибка чтения файла']]
+        return [False, ['Error reading a file.']]
     # check column names
     if (data.columns.to_list() == ['City', 'Cappuccino', 'Cinema', 'Wine', 'Gasoline', 'Avg Rent',
        'Avg Disposable Income']):
 
         # define validation elements
         decimal_validation = [CustomElementValidation(lambda d: check_float(d),
-                                                      'Значение должно быть числом в виде десятичной дроби')]
+                                                      'Must be decimal')]
         null_validation = [CustomElementValidation(lambda d: d is not np.nan,
-                                                   'Значение не может быть пустым')]
+                                                   'Must not be nan')]
 
         # define validation schema
         schema = pandas_schema.Schema([
@@ -55,16 +55,16 @@ def data_validation(filename):
         data_clean = data.drop(index=errors_index_rows)
 
         # save data
-        data_clean.to_csv('clean_data.csv')
+        # data_clean.to_csv('clean_data.csv')
 
         if errors is not None and len(errors) == len(data['City']):
             return [False, errors]
         else:
             return [True, data_clean, errors]
     else:
-        return [False, ['Названия критериев не совпадают.']]
+        return [False, ['The criteria names are incorrect.']]
 
-
+'''
 def indicators_validation(filename, df):
     """
         :param filename: name of the csv file with data
@@ -114,21 +114,17 @@ def indicators_validation(filename, df):
             return [True, data_clean, df, errors]
     else:
         return [False, ['Названия критериев не совпадают.']]
+'''
 
 
-"""
 if __name__ == '__main__':
     # true -> df -> lest of errors
     # false -> list of errors
-    check = data_validation('testdata.csv')
-    print(check[0])
-    if check[0]:
-        df1 = check[1]
-        # true -> df_indicators -> df -> list of errors
-        # false -> list of errors
-        check = indicators_validation('testindicators.csv', df1)
-        print(check[0])
-        if check[0]:
-            df2 = check[1]
-            df1 = check[2]
-"""
+    filename = 'testdata.csv'
+    val = data_validation('testindicators.csv')
+    if val[0]:
+        for error in val[-1]:
+            if error.column == 'City':
+                print('row: ' + str(error.row) + ', column: City, City name must not be empty.')
+            else:
+                print('row: ' + str(error.row) + ', column: ' + error.column + ', "' + error.value + '" must be a decimal value.')

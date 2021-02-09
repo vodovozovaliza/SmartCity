@@ -1,7 +1,7 @@
 from matplotlib.backends.qt_compat import QtCore, QtWidgets, is_pyqt5
 from matplotlib.backends.backend_qt5agg import (FigureCanvas)
 
-from PyQt5 import QtWidgets
+from PyQt5 import QtWidgets, QtGui
 from PyQt5.QtWidgets import QFileDialog
 import select_file
 import dashboard
@@ -35,6 +35,8 @@ class FileWindow(QtWidgets.QMainWindow, select_file.Ui_Form):
             path = path[0]
             print(path)
             check = validation.data_validation(path)
+            #print(check)
+
             if check[0]:
                 self.df1 = check[1]
                 #self.indfile_button.setEnabled(True)
@@ -43,14 +45,30 @@ class FileWindow(QtWidgets.QMainWindow, select_file.Ui_Form):
                     self.output1.setStyleSheet('color: green;')
                 else:
                     errors = ''
-                    for e in check[2]:
-                        errors += 'Строка ' + str(e.row) + '\n'
-                    self.output1.setText('Импортированы {} строк\n'
-                                         'Строк с ошибками: {}'.format(str(len(self.df1['City'])), str(len(check[2])) + '\n' + errors))
+                    print(check[2])
+                    for error in check[2]:
+                        if error.column == 'City':
+                            errors += 'row: ' + str(error.row) + ', column: City, City name must not be empty.'
+                        else:
+                            errors += 'row: ' + str(error.row) + ', column: ' + error.column + ', "' \
+                                      + error.value + '" must be decimal.'
+                        errors += '\n'
+                    self.output1.setText('Импортированы {} строк\nСтрок с ошибками: {}'.format(str(len(self.df1['City'])), str(len(check[2])) + '\n' + errors))
                     self.output1.setStyleSheet('color: #F0BB15;')
                 self.ok_button.setEnabled(True)
             else:
-                self.output1.setText('\n'.join(check[1]))
+                if check[1] == ['The criteria names are incorrect.'] or check[1] == ['Error rading a file.']:
+                    self.output1.setText('\n'.join(check[1]))
+                else:
+                    errors = ''
+                    for error in check[2]:
+                        if error.column == 'City':
+                            errors += 'row: ' + str(error.row) + ', column: City, City name must not be empty.'
+                        else:
+                            errors += 'row: ' + str(error.row) + ', column: ' + error.column + ', "' \
+                                      + error.value + '" must be decimal.'
+                        errors += '\n'
+                    self.output1.setText('\n' + errors)
                 self.output1.setStyleSheet('color: #E61F0F;')
 
     '''def indfile_check(self):
@@ -80,13 +98,21 @@ class FileWindow(QtWidgets.QMainWindow, select_file.Ui_Form):
         self.parent.set_files(self.df1)
         self.close()
 
+    def closeEvent(self, event):
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap("imgs/file.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.parent.openfile_button.setIcon(icon)
+        del self
+
     def close(self):
         self.setVisible(False)
         self.df1 = None
         #self.df2 = None
         #self.datafile_button.setEnabled(True)
         self.ok_button.setEnabled(False)
-        #self.indfile_button.setEnabled(True)
+        
+        #self.indfile_button.setEnabled(True)'''
+        self.closeEvent('1')
 
 
 class SearchWindow(QtWidgets.QMainWindow, search.Ui_MainWindow):
@@ -140,6 +166,8 @@ class MyApp(QtWidgets.QMainWindow, dashboard.Ui_MainWindow):
         self.search_button.clicked.connect(self.search_btn)
         self.save_button.clicked.connect(self.save_res)
 
+        #self.openfile_button.setStyleSheet('color : rgba(0, 0, 0, 0)')
+
         # self.setCentralWidget(self.widget)
         # self.showMaximized()
         self.layout_widget = QtWidgets.QVBoxLayout(self.widget)
@@ -159,6 +187,10 @@ class MyApp(QtWidgets.QMainWindow, dashboard.Ui_MainWindow):
         # self.addToolBar(QtCore.Qt.BottomToolBarArea, NavigationToolbar(dynamic_canvas, self))
 
     def openfile(self):
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap("imgs/file_click.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.openfile_button.setIcon(icon)
+
         self.file_window = FileWindow(self)
         self.file_window.show()
 
