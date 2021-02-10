@@ -98,11 +98,13 @@ class FileWindow(QtWidgets.QMainWindow, select_file.Ui_Form):
         self.parent.set_files(self.df1)
         self.close()
 
+    """
     def closeEvent(self, event):
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap("imgs/file.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.parent.openfile_button.setIcon(icon)
         del self
+    """
 
     def close(self):
         self.setVisible(False)
@@ -112,7 +114,7 @@ class FileWindow(QtWidgets.QMainWindow, select_file.Ui_Form):
         self.ok_button.setEnabled(False)
         
         #self.indfile_button.setEnabled(True)'''
-        self.closeEvent('1')
+        # self.closeEvent('1')
 
 
 class SearchWindow(QtWidgets.QMainWindow, search.Ui_MainWindow):
@@ -187,9 +189,9 @@ class MyApp(QtWidgets.QMainWindow, dashboard.Ui_MainWindow):
         # self.addToolBar(QtCore.Qt.BottomToolBarArea, NavigationToolbar(dynamic_canvas, self))
 
     def openfile(self):
-        icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("imgs/file_click.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.openfile_button.setIcon(icon)
+        # icon = QtGui.QIcon()
+        # icon.addPixmap(QtGui.QPixmap("imgs/file_click.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        # self.openfile_button.setIcon(icon)
 
         self.file_window = FileWindow(self)
         self.file_window.show()
