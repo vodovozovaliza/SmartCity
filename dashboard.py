@@ -53,7 +53,7 @@ class Ui_MainWindow(object):
         self.pagename.setObjectName("pagename")
         self.search_button = QtWidgets.QPushButton(self.centralwidget)
         self.search_button.setEnabled(False)
-        self.search_button.sietGeometry(QtCore.QRect(0, 50, 61, 51))
+        self.search_button.setGeometry(QtCore.QRect(0, 50, 61, 51))
         self.search_button.setText("")
         icon4 = QtGui.QIcon()
         icon4.addPixmap(QtGui.QPixmap("imgs/search.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
