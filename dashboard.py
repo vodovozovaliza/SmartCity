@@ -48,7 +48,7 @@ class Ui_MainWindow(object):
         self.openfile_button.setIconSize(QtCore.QSize(30, 30))
         self.openfile_button.setObjectName("openfile_button")
         self.pagename = QtWidgets.QLabel(self.centralwidget)
-        self.pagename.setGeometry(QtCore.QRect(194, 620, 91, 16))
+        self.pagename.setGeometry(QtCore.QRect(194, 625, 91, 16))
         self.pagename.setAlignment(QtCore.Qt.AlignCenter)
         self.pagename.setObjectName("pagename")
         self.search_button = QtWidgets.QPushButton(self.centralwidget)
@@ -89,11 +89,11 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "Smart City"))
-        self.up_button.setToolTip(_translate("MainWindow", "Назад"))
-        self.down_button.setToolTip(_translate("MainWindow", "Далее"))
-        self.openfile_button.setToolTip(_translate("MainWindow", "Выбрать файл"))
+        self.up_button.setToolTip(_translate("MainWindow", "Back"))
+        self.down_button.setToolTip(_translate("MainWindow", "Next"))
+        self.openfile_button.setToolTip(_translate("MainWindow", "Choose a file"))
         self.pagename.setText(_translate("MainWindow", "0-10"))
-        self.search_button.setToolTip(_translate("MainWindow", "Поиск города"))
-        self.save_button.setToolTip(_translate("MainWindow", "Сохранить в файл"))
-        self.info_button.setToolTip(_translate("MainWindow", "Информация"))
+        self.search_button.setToolTip(_translate("MainWindow", "Find a city"))
+        self.save_button.setToolTip(_translate("MainWindow", "Save to a file"))
+        self.info_button.setToolTip(_translate("MainWindow", "Info"))
 

@@ -31,7 +31,7 @@ def get_df_res(df_data, weights):
     return df_data
 
 
-def get_new_weights(df_data, df_indicator):
+def get_new_weights(df_data, df_indicator = pd.read_csv("testindicators.csv")):
     # test data
     a = np.array([
         [1, 1, 1/2, 1/5, 1/9, 1/9],

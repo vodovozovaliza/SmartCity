@@ -204,8 +204,9 @@ class MyApp(QtWidgets.QMainWindow, dashboard.Ui_MainWindow):
     def set_files(self, df1):
         # Normalize
         self.df_data = main.minmax_normalization(df1)
+
         #self.df_indicator = main.minmax_normalization(df2)
-        #self.weights = main.get_new_weights(self.df_data)
+        # self.weights = main.get_new_weights(self.df_data)
         #self.weights = [-0.00841571, -0.10225292, 0.45655328, 0.410266, 0.08514716, 0.1587022]
         self.weights = [0.03349979, 0.03349979, 0.04917881, 0.13825024, 0.34607008, 0.39950128]
         #self.weights = [-1.61463823e+01, 4.04783403e-01, 6.54669225e+00, 1.01641088e+01, 1.31285984e-02, 1.76692426e-02]
