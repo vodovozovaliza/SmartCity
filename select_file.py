@@ -58,8 +58,8 @@ class Ui_Form(object):
 
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
-        Form.setWindowTitle(_translate("Form", "Выбор файлов"))
-        self.cancel_button.setText(_translate("Form", "Отмена"))
+        Form.setWindowTitle(_translate("Form", "Choose a file"))
+        self.cancel_button.setText(_translate("Form", "Cancel"))
         self.ok_button.setText(_translate("Form", "OK"))
-        self.datafile_button.setText(_translate("Form", "Выбрать файл критериев"))
+        self.datafile_button.setText(_translate("Form", "Upload a file"))
 

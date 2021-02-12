@@ -42,7 +42,7 @@ class FileWindow(QtWidgets.QMainWindow, select_file.Ui_Form):
                 self.df1 = check[1]
                 #self.indfile_button.setEnabled(True)
                 if len(check[2]) == 0:
-                    self.output1.setText('Импортированы все {} строк'.format(str(len(self.df1['City']))))
+                    self.output1.setText('All {} cities imported'.format(str(len(self.df1['City']))))
                     self.output1.setStyleSheet('color: green;')
                 else:
                     errors = ''
@@ -54,7 +54,7 @@ class FileWindow(QtWidgets.QMainWindow, select_file.Ui_Form):
                             errors += 'row: ' + str(error.row) + ', column: ' + error.column + ', "' \
                                       + error.value + '" must be decimal.'
                         errors += '\n'
-                    self.output1.setText('Импортированы {} строк\nСтрок с ошибками: {}'.format(str(len(self.df1['City'])), str(len(check[2])) + '\n' + errors))
+                    self.output1.setText('{} cities imported\n Lines with errors: {} '.format(str(len(self.df1['City'])), str(len(check[2])) + '\n' + errors))
                     self.output1.setStyleSheet('color: #F0BB15;')
                 self.ok_button.setEnabled(True)
             else:
@@ -141,7 +141,7 @@ class SearchWindow(QtWidgets.QMainWindow, search.Ui_MainWindow):
 
         res, cnt = self.parent.search_city(self.search_inp.text())
         if len(res) == 0:
-            self.error_label.setText('Город не найден')
+            self.error_label.setText('Not found')
             return False
         print(res)
         city = res.iloc[0]

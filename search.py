@@ -291,8 +291,8 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "Поиск по городу"))
-        self.search_btn.setText(_translate("MainWindow", "Поиск"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Find a city"))
+        self.search_btn.setText(_translate("MainWindow", "Search"))
         self.label_9.setText(_translate("MainWindow", "Wine"))
         self.label_12.setText(_translate("MainWindow", "Avg Rent"))
         self.label_3.setText(_translate("MainWindow", "Place"))
