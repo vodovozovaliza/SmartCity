@@ -24,6 +24,7 @@ def minmax_normalization(df):
 def get_df_res(df_data, weights):
     # Data processing
     df_data['Total score'] = (df_data[df_data.columns[1:]] * weights).sum(axis=1)
+    # df_data['Total score'] = (df_data['Total score']- - df_data['Total score'].mean()) / (df_data['Total score'].max() - df_data['Total score'].min()) * 100
     # Sort values by total score
     df_data.sort_values(by='Total score', ascending=True, inplace=True)
     # Reset indedxes after sorrt

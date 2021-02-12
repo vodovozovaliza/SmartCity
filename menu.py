@@ -42,16 +42,16 @@ class FileWindow(QtWidgets.QMainWindow, select_file.Ui_Form):
                 self.df1 = check[1]
                 #self.indfile_button.setEnabled(True)
                 if len(check[2]) == 0:
-                    self.output1.setText('All {} cities imported'.format(str(len(self.df1['City']))))
+                    self.output1.setText('All {} cities imported.'.format(str(len(self.df1['City']))))
                     self.output1.setStyleSheet('color: green;')
                 else:
                     errors = ''
                     print(check[2])
                     for error in check[2]:
                         if error.column == 'City':
-                            errors += 'row: ' + str(error.row) + ', column: City, City name must not be empty.'
+                            errors += 'row: ' + str(error.row) + ', column: City, \nCity name must not be empty.'
                         else:
-                            errors += 'row: ' + str(error.row) + ', column: ' + error.column + ', "' \
+                            errors += 'row: ' + str(error.row) + ', column: ' + error.column + ', \n"' \
                                       + error.value + '" must be decimal.'
                         errors += '\n'
                     self.output1.setText('{} cities imported\n Lines with errors: {} '.format(str(len(self.df1['City'])), str(len(check[2])) + '\n' + errors))

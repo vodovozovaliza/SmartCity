@@ -60,6 +60,8 @@ def data_validation(filename):
         if errors is not None and len(errors) == len(data['City']):
             return [False, errors]
         else:
+            for e in errors:
+                data_clean[e.column] = pd.to_numeric(data_clean[e.column])
             return [True, data_clean, errors]
     else:
         return [False, ['The criteria names are incorrect.']]
