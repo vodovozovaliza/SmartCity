@@ -6,6 +6,7 @@ from PyQt5.QtWidgets import QFileDialog
 import select_file
 import dashboard
 import search
+import help
 
 import validation # validates the files
 import view # displays the diagram of indicators
@@ -156,6 +157,46 @@ class SearchWindow(QtWidgets.QMainWindow, search.Ui_MainWindow):
         self.label_sum.setText(str(round(city['Total score'], 3)))
 
 
+class HelpWindow(QtWidgets.QMainWindow, help.Ui_MainWindow):
+
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.parent = parent
+        self.setupUi(self)
+        self.next_btn.clicked.connect(self.next)
+        self.prev_btn.clicked.connect(self.prev)
+        self.i = 1
+    
+    def next(self):
+        if self.i == 5:
+            return self.close()
+        self.next_btn.setEnabled(False)
+        self.i += 1
+        self.next_btn.setEnabled(True)
+        self.update()
+
+    def prev(self):
+        self.prev_btn.setEnabled(False)
+        self.i -= 1
+        self.prev_btn.setEnabled(True)
+        self.update()
+
+    def close(self):
+        self.setVisible(False)
+
+    def update(self):
+        if self.i == 1:
+            self.prev_btn.setEnabled(False)
+        else:
+            self.prev_btn.setEnabled(True)
+        
+        if self.i == 5:
+            self.next_btn.setText('Get started')
+        else:
+            self.next_btn.setText('Next')
+        
+        self.img.setPixmap(QtGui.QPixmap("imgs/help/Frame " + str(self.i) + ".png"))
+
 class MyApp(QtWidgets.QMainWindow, dashboard.Ui_MainWindow):
     
     def __init__(self):
@@ -167,6 +208,7 @@ class MyApp(QtWidgets.QMainWindow, dashboard.Ui_MainWindow):
         self.openfile_button.clicked.connect(self.openfile)
         self.search_button.clicked.connect(self.search_btn)
         self.save_button.clicked.connect(self.save_res)
+        self.info_button.clicked.connect(self.help)
 
         #self.openfile_button.setStyleSheet('color : rgba(0, 0, 0, 0)')
 
@@ -195,6 +237,10 @@ class MyApp(QtWidgets.QMainWindow, dashboard.Ui_MainWindow):
 
         self.file_window = FileWindow(self)
         self.file_window.show()
+    
+    def help(self):
+        self.help_window = HelpWindow(self)
+        self.help_window.show()
 
     def search_btn(self):
         # search.Ui_Form.setup_ui(search.Ui_Form)
