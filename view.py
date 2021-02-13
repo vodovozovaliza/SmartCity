@@ -17,6 +17,7 @@ def show(df, bg=0, step=-1):
     # Create figure
     # fig, ax = plt.subplots(dpi = dpi, figsize = (1920 / dpi, 1080 / dpi), num = 'Test')
     fig, ax = plt.subplots(dpi=dpi, figsize=(1920 / dpi, 1080 / dpi))
+    plt.xlim(0, 1)
     # Drawing vertical lines for x axis
     ax.xaxis.grid(True, zorder=1)
     # ax.set_title('Test')
