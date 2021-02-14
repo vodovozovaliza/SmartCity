@@ -61,7 +61,8 @@ def data_validation(filename):
             return [False, errors]
         else:
             for e in errors:
-                data_clean[e.column] = pd.to_numeric(data_clean[e.column])
+                if e.column != 'City':
+                    data_clean[e.column] = pd.to_numeric(data_clean[e.column])
             return [True, data_clean, errors]
     else:
         return [False, ['The criteria names are incorrect.']]
