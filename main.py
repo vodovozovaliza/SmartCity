@@ -1,10 +1,12 @@
 import alpha  # alpha-concordance of weights and indicators
 import mai  # calculates the relative weights of indicators
+import LS  # calculates the relative weights of indicators
 import numpy as np
 import pandas as pd
 
 # def get_new_weights(data_file='testdata.csv', indicator_file='testindicators.csv',):
 
+ALPHA = 0
 
 def minmax_normalization(df):
     """
@@ -92,6 +94,7 @@ def get_new_weights(df_data, df_indicator = pd.read_csv("testindicators.csv")):
     print('coh: ' + str(coh))
 
     alpha_coef = dq / coh
+    ALPHA = alpha_coef
     print('alpha_coef: ' + str(alpha_coef))
 
     w_new = alpha.alpha(alpha_coef, a_matrix, weights, indicators)
@@ -120,9 +123,42 @@ def get_new_weights(df_data, df_indicator = pd.read_csv("testindicators.csv")):
     plt.show()
     '''
 
+def testLS(df_data, df_indicator):
+    a = np.array([
+        [1, 1, 1 / 2, 1 / 5, 1 / 9, 1 / 9],
+        [1, 1, 1 / 2, 1 / 5, 1 / 9, 1 / 9],
+        [2, 2, 1, 1 / 5, 1 / 9, 1 / 9],
+        [5, 5, 5, 1, 1 / 5, 1 / 5],
+        [9, 9, 9, 5, 1, 1 / 2],
+        [9, 9, 9, 3, 2, 1]
+    ])
+    w = mai.mai(a)
+    df_data = df_data.sort_values(by=df_data.columns[0])
+    a_matrix = df_data[df_data.columns[1:]].to_numpy()
+    df_indicator = df_indicator.sort_values(by=df_indicator.columns[0])
+    indicators = df_indicator['Rating'].to_numpy()
+
+    res1 = LS.leastSquares1(a_matrix, indicators)
+    res2 = LS.leastSquares2(a_matrix, indicators, ALPHA, w)
+    res3 = LS.leastSquares3(a_matrix, indicators, ALPHA, w)
+    res1 = np.around(res1, decimals = 3)
+    res2 = np.around(res2, decimals = 3)
+    res3 = np.around(res3, decimals = 3)
+    res1.shape = (len(res1), 1)
+    res2.shape = (len(res2), 1)
+    res3.shape = (len(res3), 1)
+    print("\nRESULT 1:\n")
+    print(res1)
+    print("\nRESULT 2:\n")
+    print(res2)
+    print("\nRESULT 3:\n")
+    print(res3)
+
 if __name__ == '__main__':
     df1 = pd.read_csv('testdata.csv')
     df1 = minmax_normalization(df1)
     df2 = pd.read_csv('testindicators.csv')
     #df2 = minmax_normalization(df2)
     print(get_new_weights(df1, df2))
+    print("\nLEAST SQUARES\n")
+    testLS(df1, df2)
