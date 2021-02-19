@@ -8,8 +8,8 @@ import dashboard
 import search
 import help
 
-import validation # validates the files
-import view # displays the diagram of indicators
+import validation  # validates the files
+import view  # displays the diagram of indicators
 import main
 import sys
 
@@ -18,29 +18,35 @@ import qtmodern.windows
 
 
 class FileWindow(QtWidgets.QMainWindow, select_file.Ui_Form):
-    
+
     def __init__(self, parent=None):
+        """
+        :does: init file window
+        """
         super().__init__(parent)
         self.parent = parent
         self.setupUi(self)
         self.datafile_button.clicked.connect(self.datafile_check)
-        #self.indfile_button.clicked.connect(self.indfile_check)
+        # self.indfile_button.clicked.connect(self.indfile_check)
         self.ok_button.setEnabled(False)
         self.ok_button.clicked.connect(self.send_data)
         self.cancel_button.clicked.connect(self.close)
 
     def datafile_check(self):
+        """
+        :does: get path of dataframe
+        """
         # QFileDialog.getOpenFileName((self,'Open CSV',),os.getenv('Home', 'CSV(*.)'))
         path = QFileDialog.getOpenFileName(self, "Open", "", "CSV Files (*.csv);;All Files (*)")
         if path[0] != '':
             path = path[0]
             print(path)
             check = validation.data_validation(path)
-            #print(check)
+            # print(check)
 
             if check[0]:
                 self.df1 = check[1]
-                #self.indfile_button.setEnabled(True)
+                # self.indfile_button.setEnabled(True)
                 if len(check[2]) == 0:
                     self.output1.setText('All {} cities imported.'.format(str(len(self.df1['City']))))
                     self.output1.setStyleSheet('color: green;')
@@ -54,7 +60,9 @@ class FileWindow(QtWidgets.QMainWindow, select_file.Ui_Form):
                             errors += 'row: ' + str(error.row) + ', column: ' + error.column + ', \n"' \
                                       + error.value + '" must be decimal.'
                         errors += '\n'
-                    self.output1.setText('{} cities imported\n Lines with errors: {} '.format(str(len(self.df1['City'])), str(len(check[2])) + '\n' + errors))
+                    self.output1.setText(
+                        '{} cities imported\n Lines with errors: {} '.format(str(len(self.df1['City'])),
+                                                                             str(len(check[2])) + '\n' + errors))
                     self.output1.setStyleSheet('color: #F0BB15;')
                 self.ok_button.setEnabled(True)
             else:
@@ -96,6 +104,9 @@ class FileWindow(QtWidgets.QMainWindow, select_file.Ui_Form):
                 self.output2.setStyleSheet('color: #E61F0F;')'''
 
     def send_data(self):
+        """
+        :does: set MainWindow dataframe and close file window
+        """
         self.parent.set_files(self.df1)
         self.close()
 
@@ -108,19 +119,25 @@ class FileWindow(QtWidgets.QMainWindow, select_file.Ui_Form):
     """
 
     def close(self):
+        """
+        :does: close File window
+        """
         self.setVisible(False)
         self.df1 = None
-        #self.df2 = None
-        #self.datafile_button.setEnabled(True)
+        # self.df2 = None
+        # self.datafile_button.setEnabled(True)
         self.ok_button.setEnabled(False)
-        
-        #self.indfile_button.setEnabled(True)'''
+
+        # self.indfile_button.setEnabled(True)'''
         # self.closeEvent('1')
 
 
 class SearchWindow(QtWidgets.QMainWindow, search.Ui_MainWindow):
 
     def __init__(self, parent=None):
+        """
+        :does: init Search Window
+        """
         super().__init__(parent)
         self.parent = parent
         self.setupUi(self)
@@ -128,6 +145,9 @@ class SearchWindow(QtWidgets.QMainWindow, search.Ui_MainWindow):
         self.search_inp.setText('')
 
     def search_city(self):
+        """
+        :does: search city by name in dataframe
+        """
         self.error_label.setText('')
         self.label_name.setText('')
         self.label_place.setText('')
@@ -166,8 +186,11 @@ class HelpWindow(QtWidgets.QMainWindow, help.Ui_MainWindow):
         self.next_btn.clicked.connect(self.next)
         self.prev_btn.clicked.connect(self.prev)
         self.i = 1
-    
+
     def next(self):
+        """
+        :does: scroll images
+        """
         if self.i == 5:
             return self.close()
         self.next_btn.setEnabled(False)
@@ -176,29 +199,39 @@ class HelpWindow(QtWidgets.QMainWindow, help.Ui_MainWindow):
         self.update()
 
     def prev(self):
+        """
+        :does: scroll images
+        """
         self.prev_btn.setEnabled(False)
         self.i -= 1
         self.prev_btn.setEnabled(True)
         self.update()
 
     def close(self):
+        """
+        :does: close Help Window
+        """
         self.setVisible(False)
 
     def update(self):
+        """
+        :does: update bg of window
+        """
         if self.i == 1:
             self.prev_btn.setEnabled(False)
         else:
             self.prev_btn.setEnabled(True)
-        
+
         if self.i == 5:
             self.next_btn.setText('Get started')
         else:
             self.next_btn.setText('Next')
-        
+
         self.img.setPixmap(QtGui.QPixmap("imgs/help/Frame " + str(self.i) + ".png"))
 
+
 class MyApp(QtWidgets.QMainWindow, dashboard.Ui_MainWindow):
-    
+
     def __init__(self):
         QtWidgets.QMainWindow.__init__(self)
         dashboard.Ui_MainWindow.__init__(self)
@@ -210,7 +243,7 @@ class MyApp(QtWidgets.QMainWindow, dashboard.Ui_MainWindow):
         self.save_button.clicked.connect(self.save_res)
         self.info_button.clicked.connect(self.help)
 
-        #self.openfile_button.setStyleSheet('color : rgba(0, 0, 0, 0)')
+        # self.openfile_button.setStyleSheet('color : rgba(0, 0, 0, 0)')
 
         # self.setCentralWidget(self.widget)
         # self.showMaximized()
@@ -218,44 +251,57 @@ class MyApp(QtWidgets.QMainWindow, dashboard.Ui_MainWindow):
         self.dynamic_canvas = None
         self.ax = None
         self.df_data = None
-        #self.df_indicator = None
+        # self.df_indicator = None
         self.df_res = None
-        
+
         # Index of first element in list
         self.bg = 0
         self.step = 10
-        
+
         self.up_button.setEnabled(False)
         # self.layout_widget.addWidget(self.dynamic_canvas)
         # layout.adjustSize()
         # self.addToolBar(QtCore.Qt.BottomToolBarArea, NavigationToolbar(dynamic_canvas, self))
 
     def openfile(self):
+        """
+        :does: create file window
+        """
         # icon = QtGui.QIcon()
         # icon.addPixmap(QtGui.QPixmap("imgs/file_click.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         # self.openfile_button.setIcon(icon)
 
         self.file_window = FileWindow(self)
         self.file_window.show()
-    
+
     def help(self):
+        """
+        :does: create help window
+        """
         self.help_window = HelpWindow(self)
         self.help_window.show()
 
     def search_btn(self):
+        """
+        :does: create search window
+        """
         # search.Ui_Form.setup_ui(search.Ui_Form)
         self.search_window = SearchWindow(self)
         self.search_window.show()
 
     def set_files(self, df1):
+        """
+        :does: set dataframe
+        """
         # Normalize
         self.df_data = main.minmax_normalization(df1)
 
-        #self.df_indicator = main.minmax_normalization(df2)
+        # self.df_indicator = main.minmax_normalization(df2)
         # self.weights = main.get_new_weights(self.df_data)
-        #self.weights = [-0.00841571, -0.10225292, 0.45655328, 0.410266, 0.08514716, 0.1587022]
-        self.weights = [0.03349979, 0.03349979, 0.04917881, 0.13825024, 0.34607008, 0.39950128]
-        #self.weights = [-1.61463823e+01, 4.04783403e-01, 6.54669225e+00, 1.01641088e+01, 1.31285984e-02, 1.76692426e-02]
+        self.weights = [-0.00841571, -0.10225292, 0.45655328, 0.410266, 0.08514716, 0.1587022]
+        # self.weights = [0.03349979, 0.03349979, 0.04917881, 0.13825024, 0.34607008, 0.39950128]
+        # self.weights = [-1.61463823e+01, 4.04783403e-01, 6.54669225e+00, 1.01641088e+01, 1.31285984e-02, 1.76692426e-02]
+        self.weights = [9.92651551e-05, 7.25791032e-02, 3.12450709e-01, 3.58666717e-01, 2.40904263e-01, 2.02728718e-01]
         self.df_res = main.get_df_res(self.df_data, self.weights)
         # self.df_res = self.df_res.reset_index()
 
@@ -265,17 +311,26 @@ class MyApp(QtWidgets.QMainWindow, dashboard.Ui_MainWindow):
         self.search_button.setEnabled(True)
 
     def up_dashboard(self):
+        """
+        :does: scroll subplot
+        """
         self.bg -= self.step
         if self.bg == 0:
             self.up_button.setEnabled(False)
         self.update_canvas()
 
     def down_dashboard(self):
+        """
+        :does: scroll subplot
+        """
         self.bg += self.step
         self.up_button.setEnabled(True)
         self.update_canvas()
 
     def update_canvas(self):
+        """
+        :does: update canvas
+        """
         # Remove old FigureCanvas
         if self.dynamic_canvas is not None:
             self.dynamic_canvas.deleteLater()
@@ -285,7 +340,7 @@ class MyApp(QtWidgets.QMainWindow, dashboard.Ui_MainWindow):
             self.up_button.setEnabled(False)
         else:
             self.up_button.setEnabled(True)
-        
+
         if self.bg + self.step >= len(self.df_data['City']):
             self.pagename.setText(str(self.bg) + ' - ' + str(len(self.df_data['City']) - 1))
             self.down_button.setEnabled(False)
@@ -294,18 +349,23 @@ class MyApp(QtWidgets.QMainWindow, dashboard.Ui_MainWindow):
             self.down_button.setEnabled(True)
         # Create new figure
         self.fig, self.ax = view.show(self.df_res, self.bg, self.step)
-        
+
         # Попытки сделать график прозрачным
         # self.ax.patch.set_visible(False)
         # self.ax.patch.set_facecolor('None')
         # self.fig.patch.set_visible(False)
         # self.setStyleSheet("background-color:transparent;")
-        
+
         self.dynamic_canvas = FigureCanvas(self.fig)
 
         self.layout_widget.addWidget(self.dynamic_canvas)
 
     def search_city(self, city):
+        """
+        :param city: city name
+        :return: array of cities, starts with variable city
+        :does: search cities in df
+        """
         if self.df_res is None:
             return False
         city = city.lower()
@@ -315,6 +375,9 @@ class MyApp(QtWidgets.QMainWindow, dashboard.Ui_MainWindow):
         return df, len(self.df_data['City'])
 
     def save_res(self):
+        """
+        :does: save df to file
+        """
         path, ext = QFileDialog.getSaveFileName(self, 'Save file', '', "CSV Files (*.csv);")
         if path != '':
             print(path)
@@ -324,10 +387,10 @@ class MyApp(QtWidgets.QMainWindow, dashboard.Ui_MainWindow):
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
     window = MyApp()
-    
+
     qtmodern.styles.light(app)
     mw = qtmodern.windows.ModernWindow(window)
     mw.show()
-    
+
     # window.show()
     app.exec_()

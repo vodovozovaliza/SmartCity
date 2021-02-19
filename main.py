@@ -1,12 +1,13 @@
 import alpha  # alpha-concordance of weights and indicators
 import mai  # calculates the relative weights of indicators
-import LS  # calculates the relative weights of indicators
+import mnk
 import numpy as np
 import pandas as pd
+import alpha_graphics
 
 # def get_new_weights(data_file='testdata.csv', indicator_file='testindicators.csv',):
 
-ALPHA = 0
+ALPHA = 1.03
 
 def minmax_normalization(df):
     """
@@ -85,6 +86,8 @@ def get_new_weights(df_data, df_indicator = pd.read_csv("testindicators.csv")):
     # dq = indicators.var(ddof=0)
     print('dq: ' + str(dq))
 
+    print()
+
     # print(a)
     # print(weights)
 
@@ -94,36 +97,18 @@ def get_new_weights(df_data, df_indicator = pd.read_csv("testindicators.csv")):
     print('coh: ' + str(coh))
 
     alpha_coef = dq / coh
-    ALPHA = alpha_coef
     print('alpha_coef: ' + str(alpha_coef))
 
     w_new = alpha.alpha(alpha_coef, a_matrix, weights, indicators)
     print('w_new: ' + str(w_new))
+    while True in (w_new < 0):
+        alpha_coef += 0.1
+        w_new = alpha.alpha(alpha_coef, a_matrix, weights, indicators)
+    print(alpha_coef)
+    # alpha_graphics.weight_graphs(a_matrix, weights, indicators)
     return w_new
 
-    # alpha-concordance
-    # alpha_graphics.weight_graphs(a_matrix, weights, indicators)
-
-    '''
-    dict = {}
-    for i in range(101):
-        a = float(i / 100)
-        dict[a] = alpha.alpha(a, a_matrix, weights, indicators)
-    min_value = dict[0]
-    min_alpha = 0
-    for i in range(101):
-        alpha = float(i / 100)
-        if (dict[alpha] < min_value):
-            min_value = dict[alpha]
-            min_alpha = alpha
-    lists = (dict.items())
-    x, y = zip(*lists)
-
-    plt.plot(x, y)
-    plt.show()
-    '''
-
-def testLS(df_data, df_indicator):
+def test_ls(df_data, df_indicator):
     a = np.array([
         [1, 1, 1 / 2, 1 / 5, 1 / 9, 1 / 9],
         [1, 1, 1 / 2, 1 / 5, 1 / 9, 1 / 9],
@@ -133,43 +118,24 @@ def testLS(df_data, df_indicator):
         [9, 9, 9, 3, 2, 1]
     ])
     w = mai.mai(a)
-    df_data = df_data.sort_values(by=df_data.columns[0])
     a_matrix = df_data[df_data.columns[1:]].to_numpy()
-    df_indicator = df_indicator.sort_values(by=df_indicator.columns[0])
     indicators = df_indicator['Rating'].to_numpy()
+    dq = indicators.var(ddof=0)
+    coh = mai.coherence(a, w)
+    alpha_coef = dq / coh
 
-    res1 = LS.leastSquares1(a_matrix, indicators)
+    print(mnk.classic_ls(a_matrix, indicators))
+    print(mnk.regularized_ls(a_matrix, indicators, alpha_coef, w))
+    print(mnk.limit_ls(a_matrix, indicators, alpha_coef, w))
 
-    alph = ALPHA
-    res3 = np.array([-1,-1])
-    while True in (res3 < 0):
-        print('alpha_coef: ', alph)
-        print('w: ' + str(res3))
-        alph += 0.01
-        res3 = LS.leastSquares3(a_matrix, indicators, ALPHA, w)
-
-    res2 = LS.leastSquares2(a_matrix, indicators, ALPHA, w)
-    #res3 = LS.leastSquares3(a_matrix, indicators, ALPHA, w)
-    res1 = np.around(res1, decimals = 3)
-    res2 = np.around(res2, decimals = 3)
-    res3 = np.around(res3, decimals = 3)
-    res1.shape = (len(res1), 1)
-    res2.shape = (len(res2), 1)
-    print("\nRESULT 1:\n")
-    print(res1)
-    print("\nRESULT 2:\n")
-    print(res2)
-    print("\nRESULT 3:\n")
-    print(res3)
 
 if __name__ == '__main__':
     df1 = pd.read_csv('testdata.csv')
+    df1 = df1.sort_values(by=df1.columns[0])
     df1 = minmax_normalization(df1)
     df2 = pd.read_csv('testindicators.csv')
-    print(df2)
     df2 = df2.sort_values(by=df2.columns[0])
-    print(df2['Rating'].to_numpy())
     df2 = minmax_normalization(df2)
-    print(get_new_weights(df1, df2))
-    print("LEAST SQUARES\n")
-    testLS(df1, df2)
+    res = get_new_weights(df1, df2)
+    for weight in res:
+        print(weight)

@@ -7,9 +7,10 @@ dpi = 80
 def show(df, bg=0, step=-1):
     """
     :does: shows all the data in a diagram
+    :return: subplot [bg, bg + step]
+    :does: counts Total Score in the dataframe, sorts by it, and creates a subplot
     """
     # df = pd.read_csv(input_filename)
-
     # print(df['Total score'])
 
     # Set font size
