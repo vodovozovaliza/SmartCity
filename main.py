@@ -25,6 +25,9 @@ def minmax_normalization(df):
 
 
 def get_df_res(df_data, weights):
+    """
+    :does: calculation Total Score
+    """
     # Data processing
     df_data['Total score'] = (df_data[df_data.columns[1:]] * weights).sum(axis=1)
     #max_value = df[feature_name].max()
@@ -38,6 +41,9 @@ def get_df_res(df_data, weights):
 
 
 def get_new_weights(df_data, df_indicator = pd.read_csv("testindicators.csv")):
+    """
+    :does: return weigts after MAI and alpha
+    """
     # test data
     a = np.array([
         [1, 1, 1/2, 1/5, 1/9, 1/9],
