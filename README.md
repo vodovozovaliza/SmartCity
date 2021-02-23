@@ -6,7 +6,7 @@
 * [Libraries](#libraries)
 * [Run](#run)
 
-## Screenshots
+Screenshots
 	<img src="https://i.imgur.com/P9zeDEC.png" title="Main Window">​
 
 ## Libraries
