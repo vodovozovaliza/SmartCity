@@ -1,24 +1,17 @@
-# Project Name
+# Smart City
 > The goal of the project is to calculate the integral indicators and demonstrate the results in the form of a diagram.
 
 ## Table of contents
-* [General info](#general-info)
 * [Screenshots](#screenshots)
-* [Technologies](#technologies)
-* [Setup](#setup)
-* [Features](#features)
-* [Status](#status)
-
-## General info
+* [Libraries](#libraries)
+* [Run](#run)
 
 ## Screenshots
+	![alt tag](https://i.imgur.com/P9zeDEC.png "Main Window")​
 
-## Technologies
+## Libraries
+	The libraries are listed in the file requirements.txt
 
-## Setup
+## Run
+	Launch menu.py
 
-## Code Examples
-
-## Features
-
-## Status
