@@ -7,7 +7,7 @@
 * [Run](#run)
 
 ## Screenshots
-	![](https://i.imgur.com/P9zeDEC.png "Main Window")​
+	!["Main Window"](https://i.imgur.com/P9zeDEC.png)​
 
 ## Libraries
 	The libraries are listed in the file requirements.txt
