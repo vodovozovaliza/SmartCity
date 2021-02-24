@@ -54,9 +54,6 @@ def data_validation(filename):
         errors_index_rows = [e.row for e in errors]
         data_clean = data.drop(index=errors_index_rows)
 
-        # save data
-        # data_clean.to_csv('clean_data.csv')
-
         if errors is not None and len(errors) == len(data['City']):
             return [False, errors]
         else:

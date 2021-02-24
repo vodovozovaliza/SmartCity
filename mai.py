@@ -15,13 +15,6 @@ def coherence(arr, w):
     lam = p.sum()
     lam /= n
 
-    # p = np.linalg.eigvals(arr)
-    # print('p')
-    # print(p)
-    # lam = p[0]
-    # for i in p:
-    # lam = max(lam, i)
-
     print('lam: ' + str(lam))
     # calculate concordance factor
     ci = (lam - n) / (n - 1)
@@ -60,7 +53,6 @@ def mai(arr):
     for i in range(n):
         res[i] = init[i].sum() / n
     # check if matrix coherence is satisfying
-    # if coherence(init, res) > 0.1:
     coh = coherence(arr, res)
     print('MAI.coh: ' + str(coh))
     if coh > 0.1:

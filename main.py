@@ -5,8 +5,6 @@ import numpy as np
 import pandas as pd
 import alpha_graphics
 
-# def get_new_weights(data_file='testdata.csv', indicator_file='testindicators.csv',):
-
 ALPHA = 1.03
 
 def minmax_normalization(df):
@@ -30,9 +28,6 @@ def get_df_res(df_data, weights):
     """
     # Data processing
     df_data['Total score'] = (df_data[df_data.columns[1:]] * weights).sum(axis=1)
-    #max_value = df[feature_name].max()
-    #df_data['Total score'] = df_data['Total score'] / max_value * 100
-    # df_data['Total score'] = (df_data['Total score']- - df_data['Total score'].mean()) / (df_data['Total score'].max() - df_data['Total score'].min()) * 100
     # Sort values by total score
     df_data.sort_values(by='Total score', ascending=True, inplace=True)
     # Reset indedxes after sorrt
@@ -56,8 +51,6 @@ def get_new_weights(df_data, df_indicator = pd.read_csv("testindicators.csv")):
 
     # relative weights
     weights = mai.mai(a)
-    # coh = mai.coherence(a, weights)
-    # view.show('testdata.csv', weights)
 
     # quality vector
     df_indicator = df_indicator.sort_values(by=df_indicator.columns[0])
@@ -74,11 +67,6 @@ def get_new_weights(df_data, df_indicator = pd.read_csv("testindicators.csv")):
     print(indicators)
 
     n = indicators_norm.size
-    '''s = 0
-    for i in range(n):
-        s += indicators_norm[i]
-    for i in range(n):
-        indicators_norm[i] /= s'''
 
     mn = indicators_norm.min()
     mx = indicators_norm.max()
@@ -89,17 +77,12 @@ def get_new_weights(df_data, df_indicator = pd.read_csv("testindicators.csv")):
     print(indicators_norm)
 
     dq = indicators_norm.var(ddof=0)
-    # dq = indicators.var(ddof=0)
+
     print('dq: ' + str(dq))
 
     print()
 
-    # print(a)
-    # print(weights)
-
     coh = mai.coherence(a, weights)
-    # sum |A*w - q0|
-    # coh = np.absolute((a_matrix * weights).sum(axis=1) - indicators).sum()
     print('coh: ' + str(coh))
 
     alpha_coef = dq / coh
@@ -111,7 +94,7 @@ def get_new_weights(df_data, df_indicator = pd.read_csv("testindicators.csv")):
         alpha_coef += 0.1
         w_new = alpha.alpha(alpha_coef, a_matrix, weights, indicators)
     print(alpha_coef)
-    # alpha_graphics.weight_graphs(a_matrix, weights, indicators)
+
     return w_new
 
 def test_ls(df_data, df_indicator):

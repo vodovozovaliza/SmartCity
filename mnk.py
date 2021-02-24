@@ -12,51 +12,29 @@ def classic_ls(x, q): # (XtX)^-1*Xt*q
 
 
 def regularized_ls(x, q, a, w0): # (aI + XtX)^-1*(Xtq+aw0)
-    # print('x = \n', x)
-    # print('q = \n', q)
-    # print('a = \n', a)
-    # print('w0 = \n', w0)
     w0.shape = (len(w0), 1)
 
     m = x.shape[1]
-    # print('m = \n', m)
     I = np.eye(m)
-    # print('I = \n', I)
-    '''
-    print('aI = \n', a * I)
-    print('XtX = \n', x.transpose().dot(x))
-    print('(aI + XtX)^-1 = \n', LA.inv(I * a + x.transpose().dot(x)))
-    print('Xtq = \n', x.transpose().dot(q))
-    print('aw0 = \n', a * w0)
-    print('(Xtq+aw0) = \n', x.transpose().dot(q) + a * w0)
-    print('(aI + XtX)^-1*(Xtq+aw0) = \n', LA.inv(I * a + x.transpose().dot(x)).dot(x.transpose().dot(q) + a * w0))
-    '''
     return LA.inv(I * a + x.transpose().dot(x)).dot(x.transpose().dot(q) + a * w0)
 
 
 def limit_ls(x, q, a, w0):
-    # print('x = \n', x)
-    # print('q = \n', q)
-    # print('a = \n', a)
+
     w0.shape = (len(w0), 1)
-    # print('w0 = \n', w0)
+
 
     m = x.shape[1]
-    # print('m = \n', m)
+
     e = np.ones(len(w0))
     e.shape = (len(e), 1)
-    # print('e = \n', e)
-    # print('et*w0 = \n', e.transpose().dot(w0))
+
     I = np.eye(m)
-    # print('I = \n', I)
-    # print('aI + XtX = \n', a*I + x.transpose().dot(x))
+
     P = LA.inv(a*I + x.transpose().dot(x))
-    # print('P = \n', P)
+
     w_val = e.transpose().dot(P).dot(e)
-    # print('w_val = ', w_val)
     Pm = I - (1 / w_val) * P.dot(e).dot(e.transpose())
-    # print('Pm = \n', Pm)
-    # print('et*Pm = \n', e.transpose().dot(Pm))
 
     return Pm.dot(P).dot(x.transpose().dot(q) + a*w0) + (1/w_val)*P.dot(e)
 
@@ -84,24 +62,17 @@ if __name__ == '__main__':
     dq = indicators.var(ddof=0)
     coh = mai.coherence(a, w)
     alpha_coef = dq / coh
-    # print('X = \n', np.around(a_matrix, 2))
-    print('XtX = \n', a_matrix.transpose().dot(a_matrix))
-    # print('(XtX)^-1 = \n')
-    # print_m(LA.inv(a_matrix.transpose().dot(a_matrix)))
-    # print('w0 = \n', w)
 
-    # print("\nКласичний метод найменших квадратів\n")
+    print('XtX = \n', a_matrix.transpose().dot(a_matrix))
+
     w1 = classic_ls(a_matrix, indicators)
-    # print('w1 = \n', np.around(w1.transpose(), 3))
-    # print('||q-Xw||^2 = \n', (LA.norm(indicators - a_matrix.dot(w1))) ** 2)
-    # print('||q-Xw0||^2 = \n', (LA.norm(indicators - a_matrix.dot(w))) ** 2)
 
     print("\nРегуляризований метод найменших квадратів\n")
 
     print('alpha = \n', 5)
     w2 = regularized_ls(a_matrix, indicators, 5, w)
     I = np.eye(6)
-    # print('I = \n', I)
+
     print('aI + XtX = \n', 5 * I + a_matrix.transpose().dot(a_matrix))
     P = LA.inv(5 * I + a_matrix.transpose().dot(a_matrix))
     print('P = \n', P)
@@ -112,7 +83,7 @@ if __name__ == '__main__':
     print('alpha = \n', alpha_coef)
     w2 = regularized_ls(a_matrix, indicators, alpha_coef, w)
     I = np.eye(6)
-    # print('I = \n', I)
+
     print('aI + XtX = \n', alpha_coef * I + a_matrix.transpose().dot(a_matrix))
     P = LA.inv(alpha_coef * I + a_matrix.transpose().dot(a_matrix))
     print('P = \n', P)
@@ -147,12 +118,3 @@ if __name__ == '__main__':
     print('w3 = ', w3)
 
     alpha_graphics.weight_graphs_mnk(a_matrix, w, indicators)
-
-
-'''
-1/2 * ((q-xw), (q-xw)) -> min
-w ≥ 0
-1/2 * (q, q) + 1/2 * wtXtXw - (qXt, w)
-quadprog(... A = [], B = [], Aeq = [], LB (array) = 0, UB (array) = 0)
-(0.037, 0.002, 0.055, 0.208, 0.321, 0.378)
-'''

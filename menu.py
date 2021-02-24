@@ -27,7 +27,6 @@ class FileWindow(QtWidgets.QMainWindow, select_file.Ui_Form):
         self.parent = parent
         self.setupUi(self)
         self.datafile_button.clicked.connect(self.datafile_check)
-        # self.indfile_button.clicked.connect(self.indfile_check)
         self.ok_button.setEnabled(False)
         self.ok_button.clicked.connect(self.send_data)
         self.cancel_button.clicked.connect(self.close)
@@ -80,29 +79,6 @@ class FileWindow(QtWidgets.QMainWindow, select_file.Ui_Form):
                     self.output1.setText('\n' + errors)
                 self.output1.setStyleSheet('color: #E61F0F;')
 
-    '''def indfile_check(self):
-        # QFileDialog.getOpenFileName((self,'Open CSV',),os.getenv('Home', 'CSV(*.)'))
-        path = QFileDialog.getOpenFileName(self, "Open", "", "CSV Files (*.csv);;All Files (*)")
-        if path[0] != '':
-            path = path[0]
-            print(path)
-            check = validation.indicators_validation(path, self.df1)
-            if check[0]:
-                self.datafile_button.setEnabled(False)
-                #self.indfile_button.setEnabled(False)
-                self.df2 = check[1]
-                self.df1 = check[2]
-                if len(check[3]) == 0:
-                    self.output2.setText('Импортированы все {} строк'.format(str(len(self.df2['City']))))
-                    self.output2.setStyleSheet('color: green;')
-                else:
-                    self.output2.setText('Импортированы {} строк\n'
-                                         'Строк с ошибками: {}'.format(str(len(self.df2['City'])), str(len(check[3]))))
-                    self.output2.setStyleSheet('color: #F0BB15;')
-            else:
-                self.output2.setText('\n'.join(check[1]))
-                self.output2.setStyleSheet('color: #E61F0F;')'''
-
     def send_data(self):
         """
         :does: set MainWindow dataframe and close file window
@@ -110,26 +86,13 @@ class FileWindow(QtWidgets.QMainWindow, select_file.Ui_Form):
         self.parent.set_files(self.df1)
         self.close()
 
-    """
-    def closeEvent(self, event):
-        icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("imgs/file.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.parent.openfile_button.setIcon(icon)
-        del self
-    """
-
     def close(self):
         """
         :does: close File window
         """
         self.setVisible(False)
         self.df1 = None
-        # self.df2 = None
-        # self.datafile_button.setEnabled(True)
         self.ok_button.setEnabled(False)
-
-        # self.indfile_button.setEnabled(True)'''
-        # self.closeEvent('1')
 
 
 class SearchWindow(QtWidgets.QMainWindow, search.Ui_MainWindow):
@@ -243,15 +206,10 @@ class MyApp(QtWidgets.QMainWindow, dashboard.Ui_MainWindow):
         self.save_button.clicked.connect(self.save_res)
         self.info_button.clicked.connect(self.help)
 
-        # self.openfile_button.setStyleSheet('color : rgba(0, 0, 0, 0)')
-
-        # self.setCentralWidget(self.widget)
-        # self.showMaximized()
         self.layout_widget = QtWidgets.QVBoxLayout(self.widget)
         self.dynamic_canvas = None
         self.ax = None
         self.df_data = None
-        # self.df_indicator = None
         self.df_res = None
 
         # Index of first element in list
@@ -259,18 +217,11 @@ class MyApp(QtWidgets.QMainWindow, dashboard.Ui_MainWindow):
         self.step = 10
 
         self.up_button.setEnabled(False)
-        # self.layout_widget.addWidget(self.dynamic_canvas)
-        # layout.adjustSize()
-        # self.addToolBar(QtCore.Qt.BottomToolBarArea, NavigationToolbar(dynamic_canvas, self))
 
     def openfile(self):
         """
         :does: create file window
         """
-        # icon = QtGui.QIcon()
-        # icon.addPixmap(QtGui.QPixmap("imgs/file_click.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        # self.openfile_button.setIcon(icon)
-
         self.file_window = FileWindow(self)
         self.file_window.show()
 
@@ -285,7 +236,6 @@ class MyApp(QtWidgets.QMainWindow, dashboard.Ui_MainWindow):
         """
         :does: create search window
         """
-        # search.Ui_Form.setup_ui(search.Ui_Form)
         self.search_window = SearchWindow(self)
         self.search_window.show()
 
@@ -296,14 +246,8 @@ class MyApp(QtWidgets.QMainWindow, dashboard.Ui_MainWindow):
         # Normalize
         self.df_data = main.minmax_normalization(df1)
 
-        # self.df_indicator = main.minmax_normalization(df2)
-        # self.weights = main.get_new_weights(self.df_data)
-        self.weights = [-0.00841571, -0.10225292, 0.45655328, 0.410266, 0.08514716, 0.1587022]
-        # self.weights = [0.03349979, 0.03349979, 0.04917881, 0.13825024, 0.34607008, 0.39950128]
-        # self.weights = [-1.61463823e+01, 4.04783403e-01, 6.54669225e+00, 1.01641088e+01, 1.31285984e-02, 1.76692426e-02]
         self.weights = [9.92651551e-05, 7.25791032e-02, 3.12450709e-01, 3.58666717e-01, 2.40904263e-01, 2.02728718e-01]
         self.df_res = main.get_df_res(self.df_data, self.weights)
-        # self.df_res = self.df_res.reset_index()
 
         self.bg = 0
         self.update_canvas()
@@ -350,12 +294,6 @@ class MyApp(QtWidgets.QMainWindow, dashboard.Ui_MainWindow):
         # Create new figure
         self.fig, self.ax = view.show(self.df_res, self.bg, self.step)
 
-        # Попытки сделать график прозрачным
-        # self.ax.patch.set_visible(False)
-        # self.ax.patch.set_facecolor('None')
-        # self.fig.patch.set_visible(False)
-        # self.setStyleSheet("background-color:transparent;")
-
         self.dynamic_canvas = FigureCanvas(self.fig)
 
         self.layout_widget.addWidget(self.dynamic_canvas)
@@ -371,7 +309,6 @@ class MyApp(QtWidgets.QMainWindow, dashboard.Ui_MainWindow):
         city = city.lower()
         df = self.df_res.copy()
         df = df[df['City'].str.lower().str.startswith(city, na=False)]
-        # print(df)
         return df, len(self.df_data['City'])
 
     def save_res(self):
@@ -392,5 +329,4 @@ if __name__ == '__main__':
     mw = qtmodern.windows.ModernWindow(window)
     mw.show()
 
-    # window.show()
     app.exec_()

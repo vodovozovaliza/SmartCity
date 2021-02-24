@@ -22,5 +22,5 @@ def alpha(a, matrix_A, w0, q0):
     w_new = w0 + P_m.dot(matrix_A.transpose()).dot(np.linalg.inv(P_n)).dot(q0 - matrix_A.dot(w0))
     print('w_new: ' + str(w_new))
     q_new = matrix_A.dot(w0) + Psi_n.dot(np.linalg.inv(P_n)).dot(q0 - matrix_A.dot(w0))
-    #print('q_new:' + str(q_new))
+
     return w_new
