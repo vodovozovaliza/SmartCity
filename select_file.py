@@ -7,6 +7,7 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from os.path import dirname, abspath
 
 class Ui_Form(object):
     def setupUi(self, Form):
@@ -16,7 +17,7 @@ class Ui_Form(object):
         Form.setMaximumSize(QtCore.QSize(999999, 999))
         Form.setStyleSheet("c")
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("ico.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap(dirname(abspath(__file__)) + "/ico.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         Form.setWindowIcon(icon)
         self.verticalLayoutWidget = QtWidgets.QWidget(Form)
         self.verticalLayoutWidget.setGeometry(QtCore.QRect(20, 30, 350, 271))
