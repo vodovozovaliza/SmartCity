@@ -7,20 +7,21 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from os.path import dirname, abspath
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(800, 600)
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("ico.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap(dirname(abspath(__file__)) + "/ico.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         MainWindow.setWindowIcon(icon)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.img = QtWidgets.QLabel(self.centralwidget)
         self.img.setGeometry(QtCore.QRect(0, 1, 800, 600))
         self.img.setText("")
-        self.img.setPixmap(QtGui.QPixmap("imgs/help/Frame 1.png"))
+        self.img.setPixmap(QtGui.QPixmap(dirname(abspath(__file__)) + "/imgs/help/Frame 1.png"))
         self.img.setScaledContents(True)
         self.img.setWordWrap(False)
         self.img.setOpenExternalLinks(False)

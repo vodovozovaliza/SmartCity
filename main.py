@@ -4,6 +4,8 @@ import mnk
 import numpy as np
 import pandas as pd
 import alpha_graphics
+import os
+from os.path import dirname, abspath
 
 ALPHA = 1.03
 
@@ -35,7 +37,7 @@ def get_df_res(df_data, weights):
     return df_data
 
 
-def get_new_weights(df_data, df_indicator = pd.read_csv("testindicators.csv")):
+def get_new_weights(df_data, df_indicator = pd.read_csv(dirname(abspath(__file__)) + "/testindicators.csv")):
     """
     :does: return weigts after MAI and alpha
     """

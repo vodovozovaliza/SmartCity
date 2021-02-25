@@ -12,6 +12,8 @@ import validation  # validates the files
 import view  # displays the diagram of indicators
 import main
 import sys
+import os
+from os.path import dirname, abspath
 
 import qtmodern.styles
 import qtmodern.windows
@@ -253,6 +255,7 @@ class MyApp(QtWidgets.QMainWindow, dashboard.Ui_MainWindow):
         self.update_canvas()
         self.save_button.setEnabled(True)
         self.search_button.setEnabled(True)
+        self.pagename.show()
 
     def up_dashboard(self):
         """
