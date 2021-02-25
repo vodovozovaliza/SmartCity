@@ -207,6 +207,10 @@ class MyApp(QtWidgets.QMainWindow, dashboard.Ui_MainWindow):
         self.search_button.clicked.connect(self.search_btn)
         self.save_button.clicked.connect(self.save_res)
         self.info_button.clicked.connect(self.help)
+        self.shortcut_open = QtWidgets.QShortcut(QtGui.QKeySequence('Ctrl+O'), self)
+        self.shortcut_open.activated.connect(self.openfile)
+        self.shortcut_save = QtWidgets.QShortcut(QtGui.QKeySequence('Ctrl+S'), self)
+        self.shortcut_save.activated.connect(self.save_res)
 
         self.layout_widget = QtWidgets.QVBoxLayout(self.widget)
         self.dynamic_canvas = None
