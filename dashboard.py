@@ -88,6 +88,18 @@ class Ui_MainWindow(object):
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
+        self.shortcut_open = QtWidgets.QShortcut(QtGui.QKeySequence('Ctrl+S'), self)
+        self.shortcut_open.activated.connect(self.save_shortcut)
+
+    def save_shortcut(self):
+        """
+        :does: save df to file
+        """
+        path, ext = QtWidgets.QFileDialog.getSaveFileName(self, 'Save file', '', "CSV Files (*.csv);")
+        if path != '':
+            print(path)
+            self.df_res.to_csv(path, index=False)
+
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "Smart City"))
