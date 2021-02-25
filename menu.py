@@ -260,6 +260,8 @@ class MyApp(QtWidgets.QMainWindow, dashboard.Ui_MainWindow):
         self.save_button.setEnabled(True)
         self.search_button.setEnabled(True)
         self.pagename.show()
+        self.up_button.show()
+        self.down_button.show()
 
     def up_dashboard(self):
         """
