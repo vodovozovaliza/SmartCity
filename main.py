@@ -37,7 +37,7 @@ def get_df_res(df_data, weights):
     return df_data
 
 
-def get_new_weights(df_data, df_indicator = pd.read_csv(dirname(abspath(__file__)) + "/testindicators.csv")):
+def get_new_weights(df_data, df_indicator):
     """
     :does: return weigts after MAI and alpha
     """
@@ -127,6 +127,16 @@ if __name__ == '__main__':
     df2 = pd.read_csv('testindicators.csv')
     df2 = df2.sort_values(by=df2.columns[0])
     df2 = minmax_normalization(df2)
-    res = get_new_weights(df1, df2)
-    for weight in res:
-        print(weight)
+    #res = get_new_weights(df1, df2)
+    a = np.array([
+        [1, 1, 1 / 2, 1 / 5, 1 / 9, 1 / 9],
+        [1, 1, 1 / 2, 1 / 5, 1 / 9, 1 / 9],
+        [2, 2, 1, 1 / 5, 1 / 9, 1 / 9],
+        [5, 5, 5, 1, 1 / 5, 1 / 5],
+        [9, 9, 9, 5, 1, 1 / 2],
+        [9, 9, 9, 3, 2, 1]
+    ])
+    w0 = mai.mai(a)
+    alpha_graphics.weight_graph(df1[df1.columns[1:]].to_numpy(), w0, df2['Rating'])
+    '''for weight in res:
+        print(weight)'''
