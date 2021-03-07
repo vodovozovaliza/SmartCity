@@ -8,6 +8,7 @@ def weight_graph(matrix_a, weights, q0):
     :return: nothing
     :does: displays a graph of the dependence of weights
     """
+    plt.rcParams.update({'font.size': 22})
     w_a = []
     for i in range(len(weights)):
         w_a.append({})
